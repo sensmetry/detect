@@ -1,0 +1,16 @@
+.dockerignore
+.gitignore
+
+.git
+
+__pycache__
+.venv
+
+Dockerfile
+README.md
+DEPLOY.md
+
+sysand_env
+.meta.json
+.project.json
+Output

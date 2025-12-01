@@ -1,0 +1,63 @@
+{
+  "name": "DETECT",
+  "description": "DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoD and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem. This is a SysML v2 implementation by Sensmetry, adapted from the original SysML v1.6 model developed by the DEM&S team.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "maintainer": [
+    "Sensmetry <opensource@sensmetry.com>",
+    "OUSW (R&E)"
+  ],
+  "website": "https://github.com/sensmetry/detect",
+  "topic": [
+    "Department of Defense (DoD)",
+    "Department of War (DoW)",
+    "DEM&S",
+    "OSD(R&E) / OSW(R&E)",
+    "SysMLv2 implementation",
+    "DEBoK",
+    "Syside Automator script",
+    "Tool"
+  ],
+  "usage": [
+    {
+      "resource": "urn:kpar:function-library",
+      "versionConstraint": "^1.0.0"
+    },
+    {
+      "resource": "urn:kpar:data-type-library",
+      "versionConstraint": "^1.0.0"
+    },
+    {
+      "resource": "urn:kpar:semantic-library",
+      "versionConstraint": "^1.0.0"
+    },
+    {
+      "resource": "urn:kpar:analysis-library",
+      "versionConstraint": "^2.0.0"
+    },
+    {
+      "resource": "urn:kpar:geometry-library",
+      "versionConstraint": "^2.0.0"
+    },
+    {
+      "resource": "urn:kpar:metadata-library",
+      "versionConstraint": "^2.0.0"
+    },
+    {
+      "resource": "urn:kpar:requirement-derivation-library",
+      "versionConstraint": "^2.0.0"
+    },
+    {
+      "resource": "urn:kpar:systems-library",
+      "versionConstraint": "^2.0.0"
+    },
+    {
+      "resource": "urn:kpar:cause-and-effect-library",
+      "versionConstraint": "^2.0.0"
+    },
+    {
+      "resource": "urn:kpar:quantities-and-units-library",
+      "versionConstraint": "^2.0.0"
+    }
+  ]
+}

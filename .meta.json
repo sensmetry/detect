@@ -1,0 +1,33 @@
+{
+  "index": {
+    "DETECT_Criteria_List": "detect_criteria_list.sysml",
+    "DETECT_Sizing": "detect_definitions.sysml",
+    "DETECT_Input": "detect_input.sysml",
+    "DETECT_Requirement_List": "detect_requirement_list.sysml",
+    "DETECT_Use_Cases": "detect_use_cases.sysml"
+  },
+  "created": "2025-12-01T08:46:40.596632000Z",
+  "metamodel": "https://www.omg.org/spec/SysML/20250201",
+  "checksum": {
+    "detect_criteria_list.sysml": {
+      "value": "",
+      "algorithm": "NONE"
+    },
+    "detect_definitions.sysml": {
+      "value": "",
+      "algorithm": "NONE"
+    },
+    "detect_input.sysml": {
+      "value": "",
+      "algorithm": "NONE"
+    },
+    "detect_requirement_list.sysml": {
+      "value": "",
+      "algorithm": "NONE"
+    },
+    "detect_use_cases.sysml": {
+      "value": "",
+      "algorithm": "NONE"
+    }
+  }
+}
