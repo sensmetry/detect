@@ -38,8 +38,6 @@ class FieldInput:
 
 
 # --- Functions ---
-
-
 def get_DE_Ecosystem_definition(model: syside.Model) -> syside.PartDefinition | None:
     part_definitions_sysml = model.nodes(syside.PartDefinition)
     DE_Ecosystem_definition: syside.PartDefinition | None = None
@@ -126,6 +124,24 @@ def get_available_inputs(model: syside.Model) -> list[FieldInput] | None:
         )
 
     return input_list
+
+
+def restore_system_size(old_expression: syside.Expression, model: syside.Model) -> None:
+    """This restores the old expression for system_size after calculations are
+    done to allow re-submission of the form.
+    """
+    calculated_size_element: syside.AttributeUsage | None = None
+    for attribute_usage in model.nodes(syside.AttributeUsage):
+        if attribute_usage.name == "system_size":
+            calculated_size_element = attribute_usage
+            break
+
+    if calculated_size_element is None:
+        raise ValueError("system_size part usage not found")
+
+    _1, _2 = calculated_size_element.feature_value_member.set_member_element(
+        old_expression
+    )
 
 
 def augment_config_with_defaults(
@@ -327,6 +343,7 @@ def create_footer() -> None:
         "w-full items-center justify-center px-4 py-0.5 mt-6 border-t border-gray-200 gap-1"
     ):
         # Sensmetry logo - SVG version, fully visible
+        ui.markdown("\nWebapp version 1.1").classes("text-sm text-gray-600")
         ui.markdown("\nCopyright © 2025 Sensmetry").classes("text-sm text-gray-600")
         ui.image("images/Sensmetry_logo-02.svg").classes("max-w-[200px]")
 
@@ -431,7 +448,10 @@ def main_page() -> None:
         first_label = config["options"][0]
         data[field_name] = first_label
 
-    state = {"calculated_system_size": None, "calculated_system_size_number": None}
+    state = {
+        "calculated_system_size": syside.EnumerationUsage,
+        "calculated_system_size_number": int,
+    }
 
     result_card_container = None
     second_button_container = None
@@ -520,12 +540,10 @@ def main_page() -> None:
 
         try:
             # Step 1: Write system size (needed for further calculations)
-            write_system_size(current_size, model)
+            old_expression = write_system_size(current_size, model)
 
             # Step 2: Evaluate requirements and criteria
-            requirements, criteria = evaluate_requirements_and_criteria(
-                model, current_size
-            )
+            requirements, criteria = evaluate_requirements_and_criteria(model)
 
             # Step 3: Generate CSV content in memory (for download functionality)
             requirements_csv = generate_csv_content_requirements(requirements)
@@ -611,6 +629,9 @@ def main_page() -> None:
                         criteria_toggle.on_click(lambda: show_tableview("criteria"))
 
                 tableviews_container.set_visibility(True)
+
+            # Step 5: Restore the expression (to allow form resubmission)
+            restore_system_size(old_expression, model)
 
         except Exception as e:
             ui.notify(

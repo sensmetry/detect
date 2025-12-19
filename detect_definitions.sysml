@@ -18,6 +18,9 @@ package DETECT_Sizing {
         attribute weight defined by ScalarValues::Rational [0..1];
     }
 
+    requirement valid_criteria : Criteria_Def;
+    requirement valid_requirement : DE_Ecosystem_req_Def;
+
     package DETECT_enumerations {
         doc
         /* The Enumerated Values are value attributes that are assigned to each of the size

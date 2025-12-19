@@ -29,6 +29,9 @@ SYSML_FILES = [
 ]
 
 
+VALID_REQUIREMENT_NAMES = ["valid_requirement", "valid_criteria"]
+
+
 class Requirement:
     id: str
     description: str
@@ -159,7 +162,7 @@ def get_named_item(
 
 def write_system_size(
     system_size: syside.EnumerationUsage, model: syside.Model
-) -> None:
+) -> syside.Expression:
     """This takes the system size enumeration usage and assigns it as the value for the
     system_size attribute usage. While currently the script does not save the new value in the
     SysML v2 file, the value is still needed so that syside.Compiler can evaluate the boolean
@@ -174,6 +177,10 @@ def write_system_size(
     if calculated_size_element is None:
         raise ValueError("system_size part usage not found")
 
+    old_expression = (
+        calculated_size_element.feature_value_member.extract_member_element()
+    )
+
     _, size_element_value = (
         calculated_size_element.feature_value_member.set_member_element(
             syside.FeatureReferenceExpression
@@ -182,55 +189,41 @@ def write_system_size(
     reference_value = size_element_value.referent_member
     _1, _2 = reference_value.set_member_element(system_size)
 
+    return old_expression
 
-def evaluate_requirement(
-    requirement_sysml: syside.RequirementUsage, system_size: syside.EnumerationUsage
-) -> bool:
-    """Evaluate whether a requirement applies for the given system size.
+
+def is_valid_requirement(requirement_sysml: syside.RequirementUsage) -> bool:
+    """
+    Validate a requirement usage by checking if it has a valid expression or null.
 
     Args:
-        requirement_sysml: The requirement usage to evaluate
-        system_size: The system size enumeration to evaluate against
+        requirement_sysml: The requirement usage to validate
 
     Returns:
-        True if the requirement applies for this system size, False otherwise
-
-    Raises:
-        ValueError: If the requirement has invalid constraints or evaluation fails
+        True if the requirement is valid, False otherwise
     """
-    constraints = requirement_sysml.assumed_constraints.collect()
-    if len(constraints) != 1:
-        raise ValueError(
-            f"Requirement {requirement_sysml.name} has {len(constraints)} constraints, expected 1"
-        )
+    expression = requirement_sysml.feature_value_expression
+    if expression is None:
+        return False
 
-    constraint = constraints[0]
-    if not isinstance(constraint, syside.ConstraintUsage):
-        raise ValueError(
-            f"Requirement {requirement_sysml.name} has a constraint that is not a constraint usage"
-        )
-
-    constraint_expression = constraint.result_expression
-    if constraint_expression is None:
-        raise ValueError(
-            f"Requirement {requirement_sysml.name} has no constraint expression"
-        )
-
-    evaluation, report = syside.Compiler().evaluate(constraint_expression)
+    evaluation, report = syside.Compiler().evaluate(expression)
     if report.fatal:
         raise ValueError(
-            f"Failed to evaluate constraint expression for {requirement_sysml.name}: {report}"
-        )
-    if evaluation is None:
-        raise ValueError(
-            f"Failed to evaluate constraint expression for {requirement_sysml.name}"
+            f"Failed to evaluate expression for {requirement_sysml.name}: {report}"
         )
 
-    if not isinstance(evaluation, bool):
-        raise ValueError(
-            f"Constraint expression for {requirement_sysml.name} did not evaluate to a boolean value"
-        )
-    return evaluation
+    if not isinstance(evaluation, syside.RequirementUsage):
+        if evaluation is None:
+            return False
+        else:
+            raise ValueError(
+                f"Expression for {requirement_sysml.name} evaluated to an unexpected type: {type(evaluation)}"
+            )
+    else:
+        if evaluation.name in VALID_REQUIREMENT_NAMES:
+            return True
+        else:
+            return False
 
 
 def parse_model() -> syside.Model:
@@ -390,7 +383,7 @@ def calculate_system_size(
 
 
 def evaluate_requirements_and_criteria(
-    model: syside.Model, system_size: syside.EnumerationUsage
+    model: syside.Model,
 ) -> tuple[list[Requirement], list[Criteria]]:
     """Evaluate and filter requirements and criteria based on the system size.
 
@@ -414,8 +407,11 @@ def evaluate_requirements_and_criteria(
             definition.name for definition in requirement_sysml.definitions.collect()
         ]
 
+        if requirement_sysml.name in VALID_REQUIREMENT_NAMES:
+            continue
+
         if "DE_Ecosystem_req_Def" in definitions:
-            if evaluate_requirement(requirement_sysml, system_size):
+            if is_valid_requirement(requirement_sysml):
                 if (id := requirement_sysml.short_name) is None:
                     raise ValueError(
                         f"Requirement '{requirement_sysml.name}' has no short name"
@@ -456,11 +452,11 @@ def evaluate_requirements_and_criteria(
                         f"Weight expression for {requirement_sysml.name} did not evaluate to a float value"
                     )
 
-                weight = evaluation
+                weight = round(evaluation, 4)
                 requirements.append(Requirement(id, description, weight))
 
         elif "Criteria_Def" in definitions:
-            if evaluate_requirement(requirement_sysml, system_size):
+            if is_valid_requirement(requirement_sysml):
                 if (id := requirement_sysml.short_name) is None:
                     raise ValueError(
                         f"Requirement '{requirement_sysml.name}' has no short name"
@@ -510,7 +506,7 @@ def evaluate_requirements_and_criteria(
                         f"Weight expression for {requirement_sysml.name} did not evaluate to a float value"
                     )
 
-                weight = evaluation
+                weight = round(evaluation, 4)
                 criteria.append(Criteria(id, criteria_str, context, weight))
 
     return requirements, criteria
@@ -607,7 +603,7 @@ if __name__ == "__main__":
 
     write_system_size(system_size, model)
 
-    requirements, criteria = evaluate_requirements_and_criteria(model, system_size)
+    requirements, criteria = evaluate_requirements_and_criteria(model)
 
     save_requirements_to_csv(requirements)
     save_criteria_to_csv(criteria)

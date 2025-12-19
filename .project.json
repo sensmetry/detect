@@ -1,7 +1,7 @@
 {
   "name": "DETECT",
   "description": "DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoD and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem. This is a SysML v2 implementation by Sensmetry, adapted from the original SysML v1.6 model developed by the DEM&S team.",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "maintainer": [
     "Sensmetry <opensource@sensmetry.com>",
