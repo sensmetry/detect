@@ -160,38 +160,6 @@ def get_named_item(
     return None
 
 
-def write_system_size(
-    system_size: syside.EnumerationUsage, model: syside.Model
-) -> syside.Expression:
-    """This takes the system size enumeration usage and assigns it as the value for the
-    system_size attribute usage. While currently the script does not save the new value in the
-    SysML v2 file, the value is still needed so that syside.Compiler can evaluate the boolean
-    logic that is used to filter the requirements and criteria.
-    """
-    calculated_size_element: syside.AttributeUsage | None = None
-    for attribute_usage in model.nodes(syside.AttributeUsage):
-        if attribute_usage.name == "system_size":
-            calculated_size_element = attribute_usage
-            break
-
-    if calculated_size_element is None:
-        raise ValueError("system_size part usage not found")
-
-    old_expression = (
-        calculated_size_element.feature_value_member.extract_member_element()
-    )
-
-    _, size_element_value = (
-        calculated_size_element.feature_value_member.set_member_element(
-            syside.FeatureReferenceExpression
-        )
-    )
-    reference_value = size_element_value.referent_member
-    _1, _2 = reference_value.set_member_element(system_size)
-
-    return old_expression
-
-
 def is_valid_requirement(requirement_sysml: syside.RequirementUsage) -> bool:
     """
     Validate a requirement usage by checking if it has a valid expression or null.
@@ -278,61 +246,52 @@ def system_size_calculation(data: dict[str, int]) -> int:
     return sum(data.values())
 
 
-def get_system_size_number(model: syside.Model) -> int | None:
-    """Extract and calculate the system size number from input values in the model.
+def no_TBD_values(model: syside.Model) -> bool:
+    """Checks if any of the input fields are still set to TBD.
 
     Args:
-        model: The SysML model containing the ecosystem and inputs
+        model: The SysML model
 
     Returns:
-        The calculated system size number
+        True if no TBD values are found, False otherwise
 
     Raises:
-        ValueError: If inputs are missing, invalid, or still set to TBD
+        ValueError: If inputs are missing or invalid
     """
     ecosystem_sysml = get_ecosystem_sysml_element(model)
-    inputs_data: dict[str, int] = {}
-    inputs_feature: syside.ItemUsage | syside.ItemDefinition | None = None
+    constraint_usage: syside.ConstraintUsage | None = None
 
-    inputs_feature = get_named_item(ecosystem_sysml, "inputs")
-    if inputs_feature is None:
-        raise ValueError("inputs attribute not found")
+    for element in ecosystem_sysml.owned_elements.collect():
+        if (
+            isinstance(element, syside.ConstraintUsage)
+            and element.name == "no_TBD_values"
+        ):
+            constraint_usage = element
+            break
+    if constraint_usage is None:
+        raise ValueError("no_TBD_values constraint not found")
 
-    for feature in inputs_feature.owned_elements.collect():
-        if not isinstance(feature, syside.Feature):
-            raise ValueError(f"Input element '{feature.name}' is not a feature")
+    constraint_expression = constraint_usage.result_expression
+    if constraint_expression is None:
+        raise ValueError("no_TBD_values constraint has no result expression")
 
-        expression = feature.feature_value_expression
-        if expression is None:
-            raise ValueError(f"Element '{feature.name}' has no value expression")
+    evaluation, report = syside.Compiler().evaluate(constraint_expression)
+    if report.fatal:
+        raise ValueError(f"Failed to evaluate expression for no_TBD_values: {report}")
+    if evaluation is None:
+        raise ValueError("Failed to evaluate expression for no_TBD_values")
+    if not isinstance(evaluation, bool):
+        raise ValueError(
+            "Expression for no_TBD_values did not evaluate to a boolean value"
+        )
 
-        evaluation, report = syside.Compiler().evaluate(expression)
-        if report.fatal:
-            raise ValueError(
-                f"Failed to evaluate expression for '{feature.name}': {report}"
-            )
-        if evaluation is None:
-            raise ValueError(f"Failed to evaluate expression for '{feature.name}'")
-        if not isinstance(evaluation, syside.EnumerationUsage):
-            raise ValueError(
-                f"Expression for '{feature.name}' did not evaluate to an enumeration usage"
-            )
-
-        if (number_value := evaluate_enum_value(evaluation)) == 0:
-            raise ValueError(f"Expression for '{feature.name}' is still TBD")
-
-        if feature.name is None:
-            raise ValueError(f"Input element '{feature.name}' has no name")
-
-        inputs_data[feature.name] = number_value
-
-    return system_size_calculation(inputs_data)
+    return evaluation
 
 
 def calculate_system_size(
-    model: syside.Model, system_size_number: int
+    model: syside.Model,
 ) -> syside.EnumerationUsage | None:
-    """Determine the system size enumeration based on the calculated system size number.
+    """Evaluates the system size expression and returns the system size enumeration.
 
     Args:
         model: The SysML model
@@ -346,37 +305,22 @@ def calculate_system_size(
     """
     ecosystem_sysml = get_ecosystem_sysml_element(model)
 
-    system_size_number_element = get_named_attribute(
-        ecosystem_sysml, "system_size_number"
-    )
-    if system_size_number_element is None:
-        raise ValueError("system_size_number attribute not found")
-
-    # Set the value of the system_size_number attribute so that the syside.Compiler can evaluate the boolean
-    # logic that is used to determine the system size enum value
-    _, system_size_number_value = (
-        system_size_number_element.feature_value_member.set_member_element(
-            syside.LiteralRational
-        )
-    )
-    system_size_number_value.value = system_size_number
-
     system_size_element = get_named_attribute(ecosystem_sysml, "system_size")
     if system_size_element is None:
-        raise ValueError("{system_size} attribute not found")
+        raise ValueError("system_size attribute not found")
 
     expression = system_size_element.feature_value_expression
     if expression is None:
-        raise ValueError(f"{system_size} attribute has no value expression")
+        raise ValueError("system_size attribute has no value expression")
 
     evaluation, report = syside.Compiler().evaluate(expression)
     if report.fatal:
-        raise ValueError(f"Failed to evaluate expression for {system_size}: {report}")
+        raise ValueError(f"Failed to evaluate expression for system_size: {report}")
     if evaluation is None:
-        raise ValueError(f"Failed to evaluate expression for {system_size}")
+        raise ValueError("Failed to evaluate expression for system_size")
     if not isinstance(evaluation, syside.EnumerationUsage):
         raise ValueError(
-            f"Expression for {system_size} did not evaluate to an enumeration usage"
+            "Expression for system_size did not evaluate to an enumeration usage"
         )
 
     return evaluation
@@ -589,19 +533,17 @@ def save_criteria_to_csv(
 if __name__ == "__main__":
     model = parse_model()
 
-    system_size_number = get_system_size_number(model)
-    if system_size_number is None:
-        raise ValueError("System size number not found")
+    no_TBD_values(model)
+    if not no_TBD_values(model):
+        raise ValueError("Some fields are still set to TBD")
 
-    system_size = calculate_system_size(model, system_size_number)
+    system_size = calculate_system_size(model)
     if system_size is None:
         raise ValueError("System size not found")
 
     print("\n" + "=" * 40)
     print(f"  System Size: {system_size.name}")
     print("=" * 40 + "\n")
-
-    write_system_size(system_size, model)
 
     requirements, criteria = evaluate_requirements_and_criteria(model)
 

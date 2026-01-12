@@ -14,7 +14,7 @@ package DETECT_Input {
         doc
         /* Instance of DE system, that is being sized */
 
-        item inputs : DETECT_Inputs {
+        item :>> inputs {
             // ---------------------------------------------------------
             // DIGITAL ENGINEERING ECOSYSTEM INSTANCE (ENTER DATA HERE)
             //
@@ -43,18 +43,30 @@ package DETECT_Input {
             // ---------------------------------------------------------
         }
 
-        attribute system_size_number = CalcDef_EcosystemSize(
-            inputs.number_of_users,
-            inputs.number_of_partners,
-            inputs.engineering_domains,
-            inputs.geographic_locations,
-            inputs.lifecycle_phases,
-            inputs.automation,
-            inputs.enclaves,
-            inputs.tenants,
-            inputs.project_deliverables,
-            inputs.storage
-        );
+        assert constraint no_TBD_values {
+            inputs.number_of_users.value != 0 &
+            inputs.number_of_partners.value != 0 &
+            inputs.engineering_domains.value != 0 &
+            inputs.geographic_locations.value != 0 &
+            inputs.lifecycle_phases.value != 0 &
+            inputs.automation.value != 0 &
+            inputs.enclaves.value != 0 &
+            inputs.tenants.value != 0 &
+            inputs.project_deliverables.value != 0 &
+            inputs.storage.value != 0
+        }
+
+        derived attribute :>> system_size_number =
+            inputs.number_of_users.value +
+            inputs.number_of_partners.value +
+            inputs.engineering_domains.value +
+            inputs.geographic_locations.value +
+            inputs.lifecycle_phases.value +
+            inputs.automation.value +
+            inputs.enclaves.value +
+            inputs.tenants.value +
+            inputs.project_deliverables.value +
+            inputs.storage.value;
 
         derived attribute :>> system_size =
             if system_size_number > 28

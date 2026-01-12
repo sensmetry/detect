@@ -9,12 +9,12 @@ package DETECT_Sizing {
     /* Determine DE Ecosystem Sizing */
 
     requirement def Criteria_Def {
-        subject de_tool_ecosystem :> DETECT_Input::de_ecosystem;
+        subject de_tool_ecosystem = DETECT_Input::de_ecosystem;
         attribute weight defined by ScalarValues::Rational [0..1];
     }
 
     requirement def DE_Ecosystem_req_Def {
-        subject de_tool_ecosystem :> DETECT_Input::de_ecosystem;
+        subject de_tool_ecosystem = DETECT_Input::de_ecosystem;
         attribute weight defined by ScalarValues::Rational [0..1];
     }
 
@@ -127,7 +127,7 @@ package DETECT_Sizing {
 
     // DIGITAL ENGINEERING ECOSYSTEM SIZE DEFINITION
     part def DE_Ecosystem {
-        item def DETECT_Inputs {
+        item inputs {
             attribute <Q1> number_of_users : DETECT_enumerations::Users_e {
                 doc Question
                 /* How many people do you expect will be using the DE ecosystem being developed? */
@@ -346,53 +346,17 @@ package DETECT_Sizing {
                  */
             }
         }
+        derived attribute system_size_number : ScalarValues::Natural {
+            /* A parameter aggregating the values of each user input, used to determine size of the
+             * anticipated Digital Engineering Ecosystem
+             */
+        }
 
         derived attribute system_size : DETECT_enumerations::Ecosystem_size_e {
             /* A parameter defining size of the anticipated Digital Engineering Ecosystem, which
              * value (enum) is derived by calculation
              */
         }
-    }
-
-    // DIGITAL ENGINEERING ECOSYSTEM SIZE CALCULATION (definition)
-    calc def CalcDef_EcosystemSize {
-        in u : DETECT_enumerations::Users_e;
-        in cp : DETECT_enumerations::CollaborationPartners_e;
-        in ed : DETECT_enumerations::EngineeringDomains_e;
-        in gl : DETECT_enumerations::GeographicLocations_e;
-        in lp : DETECT_enumerations::LifecyclePhases_e;
-        in a : DETECT_enumerations::Automation_e;
-        in e : DETECT_enumerations::Enclaves_e;
-        in t : DETECT_enumerations::Tenants_e;
-        in pd : DETECT_enumerations::ProjectDeliverables_e;
-        in s : DETECT_enumerations::Storage_e;
-
-        assert constraint {
-            comment
-            /* Assert, that neither parameter is 'TBD' */
-            u.value > 0 &
-            cp.value > 0 &
-            ed.value > 0 &
-            gl.value > 0 &
-            lp.value > 0 &
-            a.value > 0 &
-            e.value > 0 &
-            t.value > 0 &
-            pd.value > 0 &
-            s.value > 0
-        }
-
-        return sum : ScalarValues::Integer =
-            u.value +
-            cp.value +
-            ed.value +
-            gl.value +
-            lp.value +
-            a.value +
-            e.value +
-            t.value +
-            pd.value +
-            s.value;
     }
 
     enum def status_e {

@@ -4,7 +4,7 @@ lock_version = "0.2"
 
 [[project]]
 name = "DETECT"
-version = "1.1.0"
+version = "1.2.0"
 exports = [
     "DETECT_Criteria_List",
     "DETECT_Input",
@@ -27,7 +27,7 @@ usages = [
 sources = [
     { editable = "." },
 ]
-checksum = "ef53354715d1ca9f190fc0afb9766b2c7a669aa9505cfec00fec03ed1d604e15"
+checksum = "75e3b1ba33abbfa49c673315a034b35316e8544e46aa8e157e029eaa124b5bca"
 
 [[project]]
 name = "Kernel Data Type Library"

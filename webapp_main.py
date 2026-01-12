@@ -3,14 +3,14 @@ import syside
 from detect import (
     parse_model,
     get_named_item,
-    system_size_calculation,
     calculate_system_size,
-    write_system_size,
     evaluate_requirements_and_criteria,
     get_named_documentation_comment,
     natural_sort_key,
     Requirement,
     Criteria,
+    get_ecosystem_sysml_element,
+    no_TBD_values,
 )
 import os
 import io
@@ -38,15 +38,89 @@ class FieldInput:
 
 
 # --- Functions ---
-def get_DE_Ecosystem_definition(model: syside.Model) -> syside.PartDefinition | None:
-    part_definitions_sysml = model.nodes(syside.PartDefinition)
-    DE_Ecosystem_definition: syside.PartDefinition | None = None
-    for part_definition in part_definitions_sysml:
-        if part_definition.name == "DE_Ecosystem":
-            DE_Ecosystem_definition = part_definition
-            break
+def write_user_inputs(user_inputs: dict[str, str], model: syside.Model) -> None:
+    """Writes the selected parameters into the SysML model.
+
+    Args:
+        user_inputs: A dictionary of field names and selected values
+        model: The SysML model
+    """
+    DE_Ecosystem_definition = get_DE_Ecosystem_definition(model)
     if DE_Ecosystem_definition is None:
         raise ValueError("DE_Ecosystem part definition not found")
+
+    inputs_element_sysml = get_named_item(DE_Ecosystem_definition, "inputs")
+    if inputs_element_sysml is None:
+        raise ValueError("inputs attribute not found")
+
+    for field_name, selected_value in user_inputs.items():
+        # Finding the enumeration usage that matches the selected value
+        selected_value_sysml: syside.EnumerationUsage | None = None
+        for input in inputs_element_sysml.owned_elements.collect():
+            if input.name != field_name:
+                continue
+            if not isinstance(input, syside.AttributeUsage):
+                raise ValueError(
+                    f"Input field '{input.name}' is not an attribute usage"
+                )
+            # The input field is defined by the enumeration definition
+            enum_def = input.attribute_definitions[0]
+            if not isinstance(enum_def, syside.EnumerationDefinition):
+                raise ValueError(f"Input field '{field_name}' not found")
+            enum_available_values = enum_def.enumerated_values.collect()
+            for enum_available_value in enum_available_values:
+                if enum_available_value.declared_name == selected_value:
+                    selected_value_sysml = enum_available_value
+                    break
+        if selected_value_sysml is None:
+            raise ValueError(
+                f"Selected value '{selected_value}' not found for field '{field_name}'"
+            )
+
+        # Finding the sysml element of the input field
+        input_field_sysml: syside.AttributeUsage | None = None
+        ecosystem_sysml = get_ecosystem_sysml_element(model)
+        inputs_feature: syside.ItemUsage | syside.ItemDefinition | None = None
+
+        inputs_feature = get_named_item(ecosystem_sysml, "inputs")
+        if inputs_feature is None:
+            raise ValueError("inputs attribute not found")
+
+        for feature in inputs_feature.owned_elements.collect():
+            if feature.name == field_name:
+                if not isinstance(feature, syside.AttributeUsage):
+                    raise ValueError(
+                        f"Input field '{feature.name}' is not an attribute usage"
+                    )
+                input_field_sysml = feature
+                break
+        if input_field_sysml is None:
+            raise ValueError(f"Input field '{field_name}' not found")
+
+        _, member_element = input_field_sysml.feature_value_member.set_member_element(
+            syside.FeatureReferenceExpression
+        )
+        reference_value = member_element.referent_member
+        reference_value.set_member_element(selected_value_sysml)
+
+
+def get_DE_Ecosystem_definition(model: syside.Model) -> syside.PartUsage | None:
+    """
+    Gets the DE_Ecosystem part usage from the SysML model.
+
+    Args:
+        model: The SysML model
+    Returns:
+        The DE_Ecosystem part usage
+    """
+    part_usages_sysml = model.nodes(syside.PartUsage)
+    DE_Ecosystem_definition: syside.PartUsage | None = None
+    for part_usage in part_usages_sysml:
+        if part_usage.name == "de_ecosystem":
+            DE_Ecosystem_definition = part_usage
+            break
+    if DE_Ecosystem_definition is None:
+        raise ValueError("de_ecosystem part usage not found")
     return DE_Ecosystem_definition
 
 
@@ -58,7 +132,7 @@ def get_available_inputs(model: syside.Model) -> list[FieldInput] | None:
     DE_Ecosystem_definition = get_DE_Ecosystem_definition(model)
     if DE_Ecosystem_definition is None:
         raise ValueError("DE_Ecosystem part definition not found")
-    inputs_element_sysml = get_named_item(DE_Ecosystem_definition, "DETECT_Inputs")
+    inputs_element_sysml = get_named_item(DE_Ecosystem_definition, "inputs")
     input_list: list[FieldInput] = []
     if inputs_element_sysml is None:
         raise ValueError("inputs attribute not found")
@@ -76,12 +150,16 @@ def get_available_inputs(model: syside.Model) -> list[FieldInput] | None:
         if not isinstance(input_type, syside.EnumerationDefinition):
             continue  # In the ported definitions there is an unfinished attribute definition. We skip it without raising an error.
 
-        description = get_named_documentation_comment(input_definition, "Description")
+        description = get_named_documentation_comment(
+            input_definition.heritage[0][1], "Description"
+        )
         if description is None:
-            raise ValueError(f"Description for input '{name}' not found")
+            raise ValueError(
+                f"Description for input '{name}' not found {input_definition.name}"
+            )
 
         dropdown_question = get_named_documentation_comment(
-            input_definition, "Question"
+            input_definition.heritage[0][1], "Question"
         )
         if dropdown_question is None:
             raise ValueError(f"Question for input '{name}' not found")
@@ -124,24 +202,6 @@ def get_available_inputs(model: syside.Model) -> list[FieldInput] | None:
         )
 
     return input_list
-
-
-def restore_system_size(old_expression: syside.Expression, model: syside.Model) -> None:
-    """This restores the old expression for system_size after calculations are
-    done to allow re-submission of the form.
-    """
-    calculated_size_element: syside.AttributeUsage | None = None
-    for attribute_usage in model.nodes(syside.AttributeUsage):
-        if attribute_usage.name == "system_size":
-            calculated_size_element = attribute_usage
-            break
-
-    if calculated_size_element is None:
-        raise ValueError("system_size part usage not found")
-
-    _1, _2 = calculated_size_element.feature_value_member.set_member_element(
-        old_expression
-    )
 
 
 def augment_config_with_defaults(
@@ -343,7 +403,7 @@ def create_footer() -> None:
         "w-full items-center justify-center px-4 py-0.5 mt-6 border-t border-gray-200 gap-1"
     ):
         # Sensmetry logo - SVG version, fully visible
-        ui.markdown("\nWebapp version 1.1").classes("text-sm text-gray-600")
+        ui.markdown("\nWebapp version 1.2").classes("text-sm text-gray-600")
         ui.markdown("\nCopyright © 2025 Sensmetry").classes("text-sm text-gray-600")
         ui.image("images/Sensmetry_logo-02.svg").classes("max-w-[200px]")
 
@@ -468,6 +528,7 @@ def main_page() -> None:
         # Check for fields with value 0 (TBD) and build data dict for system_size_calculation
         fields_with_tbd = []
         inputs_data: dict[str, int] = {}
+        inputs_data_new: dict[str, str] = {}
 
         for field_name, selected_label in data.items():
             config = dynamic_options[field_name]
@@ -477,29 +538,29 @@ def main_page() -> None:
             # Build the inputs_data dict with field_name -> internal_id mapping
             if internal_id is not None:
                 inputs_data[field_name] = internal_id
+                inputs_data_new[field_name] = selected_label
 
         # Clear previous content
         result_card_container.clear()
 
-        # If any fields have TBD, show warning
-        if fields_with_tbd:
-            with result_card_container:
-                ui.html(
-                    "<div class='p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded'>"
-                    "<strong>Error:</strong> The following fields are still set to 'TBD':<br>"
-                    "<ul class='list-disc list-inside mt-2'>"
-                    + "".join(f"<li>{field}</li>" for field in fields_with_tbd)
-                    + "</ul>"
-                    "</div>",
-                    sanitize=False,
-                ).classes("w-full")
-        else:
-            # Calculate system size number when all fields are filled
-            try:
-                sys_num = system_size_calculation(inputs_data)
-                state["calculated_system_size_number"] = sys_num
-
-                sys_size_obj = calculate_system_size(model, sys_num)
+        try:
+            # Write the user inputs to the SysML model
+            write_user_inputs(inputs_data_new, model)
+            # Check the constraint that no fields are set to TBD
+            if not no_TBD_values(model):
+                with result_card_container:
+                    ui.html(
+                        "<div class='p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded'>"
+                        "<strong>Error:</strong> The following fields are still set to 'TBD':<br>"
+                        "<ul class='list-disc list-inside mt-2'>"
+                        + "".join(f"<li>{field}</li>" for field in fields_with_tbd)
+                        + "</ul>"
+                        "</div>",
+                        sanitize=False,
+                    ).classes("w-full")
+            else:
+                # Calculate the system size and display the result
+                sys_size_obj = calculate_system_size(model)
                 state["calculated_system_size"] = sys_size_obj
                 if sys_size_obj is None:
                     raise ValueError("System size not found")
@@ -514,17 +575,17 @@ def main_page() -> None:
                 # Show the second button if it exists
                 if second_button_container is not None:
                     second_button_container.set_visibility(True)
-            except Exception as e:
-                state["calculated_system_size_number"] = None
-                if second_button_container is not None:
-                    second_button_container.set_visibility(False)
-                with result_card_container:
-                    ui.html(
-                        "<div class='p-4 bg-red-100 border-l-4 border-red-500 rounded'>"
-                        f"<strong>✗ Error calculating system size:</strong> {str(e)}"
-                        "</div>",
-                        sanitize=False,
-                    ).classes("w-full")
+        except Exception as e:
+            state["calculated_system_size_number"] = None
+            if second_button_container is not None:
+                second_button_container.set_visibility(False)
+            with result_card_container:
+                ui.html(
+                    "<div class='p-4 bg-red-100 border-l-4 border-red-500 rounded'>"
+                    f"<strong>✗ Error calculating system size:</strong> {str(e)}"
+                    "</div>",
+                    sanitize=False,
+                ).classes("w-full")
 
     def process_with_system_size() -> None:
         """Handles the second button action: writes system size, evaluates requirements/criteria, and displays in tableviews."""
@@ -539,17 +600,14 @@ def main_page() -> None:
             return
 
         try:
-            # Step 1: Write system size (needed for further calculations)
-            old_expression = write_system_size(current_size, model)
-
-            # Step 2: Evaluate requirements and criteria
+            # Step 1: Evaluate requirements and criteria
             requirements, criteria = evaluate_requirements_and_criteria(model)
 
-            # Step 3: Generate CSV content in memory (for download functionality)
+            # Step 2: Generate CSV content in memory (for download functionality)
             requirements_csv = generate_csv_content_requirements(requirements)
             criteria_csv = generate_csv_content_criteria(criteria)
 
-            # Step 4: Update tableviews container
+            # Step 3: Update tableviews container
             if tableviews_container is not None:
                 tableviews_container.clear()
                 with tableviews_container:
@@ -629,9 +687,6 @@ def main_page() -> None:
                         criteria_toggle.on_click(lambda: show_tableview("criteria"))
 
                 tableviews_container.set_visibility(True)
-
-            # Step 5: Restore the expression (to allow form resubmission)
-            restore_system_size(old_expression, model)
 
         except Exception as e:
             ui.notify(

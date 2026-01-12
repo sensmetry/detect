@@ -23,7 +23,7 @@ package DETECT_Requirement_List {
             else null {
         doc Description
         /* Advanced Technologies and Innovation */
-        subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
         attribute redefines weight = 1.0 / size(requirement_list);
 
         requirement_1_subrequirements = ('R1.1', 'R1.2');
@@ -37,7 +37,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Innovation */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_1_subrequirements);
 
             requirement_1_1_subrequirements = ('R1.1.1', 'R1.1.2', 'R1.1.3', 'R1.1.4');
@@ -49,7 +49,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support prototyping activities for ecosystem improvements */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_1_1_subrequirements);
             }
             requirement <'R1.1.2'> inno_prototyping_apps defined by DE_Ecosystem_req_Def =
@@ -59,7 +59,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate intelligent applications that enable rigorous prototyping to facilitate digital to physical prototypes and proof of concept activities */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_1_1_subrequirements);
             }
             requirement <'R1.1.3'> inno_development_apps defined by DE_Ecosystem_req_Def =
@@ -71,7 +71,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate intelligent applications that enable rigorous development of early and often automated testing of system performance requirements */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_1_1_subrequirements);
             }
             requirement <'R1.1.4'> inno_traceability defined by DE_Ecosystem_req_Def =
@@ -83,7 +83,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate intelligent applications that enable cross-domain traceability of design thread, analytical thread and proof of concept analysis */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_1_1_subrequirements);
             }
         }
@@ -99,7 +99,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Technologies */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_1_subrequirements);
 
             requirement_1_2_subrequirements = ('R1.2.1', 'R1.2.2');
@@ -111,7 +111,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide the software tools, software libraries, software builds, and automated testing capabilities needed for development and operations (DevOps) process implementations */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_1_2_subrequirements);
             }
             requirement <'R1.2.2'> tech_rnd defined by DE_Ecosystem_req_Def =
@@ -125,7 +125,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide advanced technologies to support leading-edge research and development capabilities such as, but not limited to, big data analytics, machine learning, artificial intelligence, ontology, virtual reality, augmented reality, and 5G technologies */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_1_2_subrequirements);
             }
         }
@@ -140,7 +140,7 @@ package DETECT_Requirement_List {
             else null {
         doc Description
         /* Collaboration */
-        subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
         attribute redefines weight = 1.0 / size(requirement_list);
 
         requirement_2_subrequirements = ('R2.1', 'R2.2');
@@ -156,7 +156,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Resources */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_2_subrequirements);
 
             requirement_2_1_subrequirements = ('R2.1.1', 'R2.1.2', 'R2.1.3');
@@ -172,7 +172,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide automated notifications capability to all applicable change events */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_1_subrequirements);
             }
 
@@ -187,7 +187,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall be sized for growth in the number of connections and types of accesses (VM, web portal, others) to support (TBD) users */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_1_subrequirements);
             }
 
@@ -202,7 +202,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall enable sharing of models, data, and simulations from authorized users and engineering disciplines */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_1_subrequirements);
             }
         }
@@ -218,7 +218,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Users */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_2_subrequirements);
 
             requirement_2_2_subrequirements = ('R2.2.1', 'R2.2.2', 'R2.2.3', 'R2.2.4', 'R2.2.5');
@@ -234,7 +234,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support remote teleconferencing with messaging, audio, and video */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_2_subrequirements);
             }
 
@@ -247,7 +247,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall be sized and maintained for (TBD) number of users for concurrent use of program identified capabilities and functions appropriate for the program. (e.g., data managers, data users, data creators) */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_2_subrequirements);
             }
 
@@ -262,7 +262,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall be sized and maintained for the number of users to be 100% of identified program personnel */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_2_subrequirements);
             }
 
@@ -277,7 +277,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide network access to authenticated users, organizations, and stakeholders */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_2_subrequirements);
             }
 
@@ -290,7 +290,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide the access for authenticated users and stakeholders to execute simulations and perform data analytics */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_2_2_subrequirements);
             }
         }
@@ -305,7 +305,7 @@ package DETECT_Requirement_List {
             else null {
         doc Description
         /* Data */
-        subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
         attribute redefines weight = 1.0 / size(requirement_list);
 
         requirement_3_subrequirements = ('R3.1', 'R3.2', 'R3.3');
@@ -321,7 +321,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Exchange */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_3_subrequirements);
 
             requirement_3_1_subrequirements = (
@@ -337,7 +337,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide a capability to associate data that has been generated by different engineering domains */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
 
@@ -348,7 +348,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide monitoring of error detection and quality assessment of all data translation across engineering tools */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
 
@@ -361,7 +361,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide a capability to automate data exchange within workflows of users */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
 
@@ -372,7 +372,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate model exchange standards, published standards and procedures for interoperability among supported modeling and analysis tools */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
 
@@ -383,7 +383,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide a capability to translate data formats between disparate engineering tools */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
 
@@ -396,7 +396,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide the compatibility to receive, store, and utilize data in specified formats, from both legacy and new tools and sources */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
 
@@ -409,7 +409,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide access to metadata and supporting data for all data and information in the ecosystem */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_1_subrequirements);
             }
         }
@@ -425,7 +425,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Curation */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_3_subrequirements);
 
             requirement_3_2_subrequirements = (
@@ -443,7 +443,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall contain formal configuration management for all models, simulations, analysis, and technical data as the authoritative-source-of-truth for the ecosystem */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -456,7 +456,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide capabilities to maintain measures and metrics for both program-specific and ecosystem performance measuring */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -471,7 +471,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate discovery of models and associated data from outside the local ecosystem instantiation */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -484,7 +484,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall enable customization of library function executable applications */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -499,7 +499,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall include the ability to curate models for reuse */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -512,7 +512,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide auditable technical data curation over a full life-cycle of platforms/systems for (TBD) years */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -527,7 +527,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide a library function of executable applications available for access and reuse */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
 
@@ -542,7 +542,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall contain an organized data-storing structure for ease of discovery and navigation */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_2_subrequirements);
             }
         }
@@ -558,7 +558,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Storage */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_3_subrequirements);
 
             requirement_3_3_subrequirements = ('R3.3.1', 'R3.3.2', 'R3.3.3', 'R3.3.4');
@@ -574,7 +574,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide for sufficient storage size allocations to all engineering technical data, for all major life cycle phases, with (TBD)% margin expansion */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_3_subrequirements);
             }
 
@@ -587,7 +587,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide (TBD)% storage expansion capacity for all data that is above and beyond the theoretical storage calculations needed for the ecosystem being developed */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_3_subrequirements);
             }
 
@@ -602,7 +602,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall make data available to all authorized users and ensure unmodified utilization on a recurring basis */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_3_subrequirements);
             }
             requirement <'R3.3.4'> storage_critical_data defined by DE_Ecosystem_req_Def =
@@ -614,7 +614,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall require the need to enter and store critical data one time */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_3_3_subrequirements);
             }
         }
@@ -629,7 +629,7 @@ package DETECT_Requirement_List {
             else null {
         doc Description
         /* Environment */
-        subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
         attribute redefines weight = 1.0 / size(requirement_list);
 
         requirement_4_subrequirements = ('R4.1', 'R4.2', 'R4.3', 'R4.4');
@@ -645,7 +645,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Licensing */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_4_subrequirements);
 
             requirement_4_1_subrequirements = (
@@ -663,7 +663,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide license and tool usage metrics */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_1_subrequirements);
             }
 
@@ -678,7 +678,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall have warning report capabilities for approaching license renewal dates */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_1_subrequirements);
             }
 
@@ -693,7 +693,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall have warning report capabilities for approaching license capacity limits */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_1_subrequirements);
             }
 
@@ -706,7 +706,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall employ flexible license management strategies for all shared software that supports user availability of .999 (TBR) */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_1_subrequirements);
             }
 
@@ -719,7 +719,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall have warning report capabilities for low usage of tool licenses */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_1_subrequirements);
             }
 
@@ -734,7 +734,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall facilitate new software tool license allocations within (TBD) days of a request */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_1_subrequirements);
             }
         }
@@ -750,7 +750,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Visualization */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_4_subrequirements);
 
             requirement_4_2_subrequirements = 'R4.2.1';
@@ -766,7 +766,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall have a fully integrated applicable visualization and reporting capability */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_2_subrequirements);
             }
         }
@@ -782,7 +782,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Portability */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_4_subrequirements);
 
             requirement_4_3_subrequirements = ('R4.3.1', 'R4.3.2', 'R4.3.3', 'R4.3.4');
@@ -794,7 +794,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support offline retrieval of TBD applicable data types and TBD applicable information formats */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_3_subrequirements);
             }
 
@@ -809,7 +809,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall enable the export of data directly to applicable productivity software */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_3_subrequirements);
             }
 
@@ -822,7 +822,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide portability of applications through Virtual Machines (VMs) and other applicable virtual means */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_3_subrequirements);
             }
 
@@ -833,7 +833,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide capability to export prototyped ecosystem improvements for reuse */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_3_subrequirements);
             }
         }
@@ -849,7 +849,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Support */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_4_subrequirements);
 
             requirement_4_4_subrequirements = (
@@ -865,7 +865,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide for a formal, automated checkout of all applications and data */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
 
@@ -878,7 +878,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide and support growth of automation and autonomous artifact generation */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
 
@@ -891,7 +891,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall incorporate mechanisms to support integrated workflows for managing non-technical programmatic work in progress, separate from released work product */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
 
@@ -904,7 +904,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide documentation and reference guidance describing the physical and virtual bounds of the ecosystem for ease and efficient user understanding of the ecosystem */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
 
@@ -919,7 +919,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide a query capability to search, locate, and access programmatic and engineering products by all authenticated users and stakeholders */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
 
@@ -932,7 +932,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall incorporate mechanisms to support integrated workflows for managing technical work in progress separate from released work product */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
 
@@ -943,7 +943,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall incorporate model centric workflows throughout the development life-cycle, from requirements definition, through requirements selloff and support of production, deployment, operation and sustainment life-cycle phases */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_4_4_subrequirements);
             }
         }
@@ -958,7 +958,7 @@ package DETECT_Requirement_List {
             else null {
         doc Description
         /* Infrastructure */
-        subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
         attribute redefines weight = 1.0 / size(requirement_list);
 
         requirement_5_subrequirements = ('R5.1', 'R5.2', 'R5.3');
@@ -974,7 +974,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Software */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_5_subrequirements);
 
             requirement_5_1_subrequirements = ('R5.1.1', 'R5.1.2', 'R5.1.3');
@@ -990,7 +990,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate implementation of commercial off-the-shelf, custom, open source, and free-ware tools */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_1_subrequirements);
             }
 
@@ -1003,7 +1003,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall enable access to legacy modeling software and tools required to support engineering life-cycle activities */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_1_subrequirements);
             }
 
@@ -1016,7 +1016,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall establish a mechanism to enable ATO reciprocity for widely adopted and approved software tools use */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_1_subrequirements);
             }
         }
@@ -1030,7 +1030,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Networks */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_5_subrequirements);
 
             requirement_5_2_subrequirements = ('R5.2.1', 'R5.2.2', 'R5.2.3', 'R5.2.4');
@@ -1042,7 +1042,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide extensibility for secure connections to Federally Funded Research Centers (FFRDCs) */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_2_subrequirements);
             }
 
@@ -1053,7 +1053,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide extensibility with interoperability to both unclassified and classified Tri-Service and other defense networks */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_2_subrequirements);
             }
 
@@ -1066,7 +1066,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support connectivity to remote, off-line, and geographically dispersed locations, throughout the development life-cycle and going into production, operations, and sustainment phases */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_2_subrequirements);
             }
 
@@ -1077,7 +1077,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide extensibility with interoperability to applicable non-secure and secure connections to industry , academia and OCONUS networks */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_2_subrequirements);
             }
         }
@@ -1093,7 +1093,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Hardware/Computing */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_5_subrequirements);
 
             requirement_5_3_subrequirements = ('R5.3.1', 'R5.3.2', 'R5.3.3');
@@ -1107,7 +1107,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide local basic engineering productivity computing and analysis capabilities, applicable for localized engineering scoped activities */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_3_subrequirements);
             }
 
@@ -1122,7 +1122,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall be implemented and maintained with approved IT hardware and software */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_3_subrequirements);
             }
 
@@ -1133,7 +1133,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate expansion of compute capabilities to support high-performance data analysis and computing power. */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_5_3_subrequirements);
             }
         }
@@ -1148,7 +1148,7 @@ package DETECT_Requirement_List {
             else null {
         doc Description
         /* Security */
-        subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
         attribute redefines weight = 1.0 / size(requirement_list);
 
         requirement_6_subrequirements = ('R6.1', 'R6.2', 'R6.3');
@@ -1164,7 +1164,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Classification */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_6_subrequirements);
 
             requirement_6_1_subrequirements = (
@@ -1180,7 +1180,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support operations in a Secret environment */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
 
@@ -1193,7 +1193,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support operations in a Top Secret environment */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
 
@@ -1208,7 +1208,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support operations in a closed community controlled applicable environment */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
 
@@ -1221,7 +1221,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall have the capability to promote/demote classifications with a minimum two cleared person adjudication review */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
 
@@ -1232,7 +1232,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide extensibility for approved automation to promote/demote classifications */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
 
@@ -1247,7 +1247,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall support operations in an Unclassified environment */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
 
@@ -1262,7 +1262,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide extensibility to accommodate bi-directional classification translation (Promote/Demote) in a multiple-level-security environment */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_1_subrequirements);
             }
         }
@@ -1278,7 +1278,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Access Control */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_6_subrequirements);
 
             requirement_6_2_subrequirements = (
@@ -1297,7 +1297,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide authorized users access to models and associated data */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1312,7 +1312,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide a two-factor authentication sign-on to the system */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1327,7 +1327,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide authorized users privileges to modify models */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1340,7 +1340,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall  provide accessible areas designated for knowledge transfer */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1353,7 +1353,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide automated capability for managing access controls consistent with NIST access control guidance */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1368,7 +1368,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall accommodate new user account approvals in less than TBD (days, hrs, minutes) */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1383,7 +1383,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide applicable CAC enabled sign-on or single sign-on capability for all authenticated users */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1396,7 +1396,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall comply with all applicable NIST Access Control guidance for identification and authentication of users and all network accesses */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
 
@@ -1409,7 +1409,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide access for stakeholders and end users to all authoritative data and information at the appropriate classification level of the end user */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_2_subrequirements);
             }
         }
@@ -1425,7 +1425,7 @@ package DETECT_Requirement_List {
                 else null {
             doc Description
             /* Cybersecurity */
-            subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
             attribute redefines weight = 1.0 / size(requirement_6_subrequirements);
 
             requirement_6_3_subrequirements = ('R6.3.1', 'R6.3.2', 'R6.3.3', 'R6.3.4');
@@ -1441,7 +1441,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem design shall support and enable authority to operate (ATO) requests within (TBD) working days */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_3_subrequirements);
             }
 
@@ -1456,7 +1456,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall  comply with applicable Information Assurance (IA) Risk Management Framework (RMF) requirements */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_3_subrequirements);
             }
 
@@ -1467,7 +1467,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem design shall provide extensibility to automate authority to operate (ATO) requests */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_3_subrequirements);
             }
 
@@ -1482,7 +1482,7 @@ package DETECT_Requirement_List {
                     else null {
                 doc Description
                 /* The DE ecosystem shall provide for Controlled Unclassified Information (CUI) and proprietary information segregation */
-                subject DE_Ecosystem = DETECT_Input::de_ecosystem;
+
                 attribute redefines weight = 1.0 / size(requirement_6_3_subrequirements);
             }
         }
