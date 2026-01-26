@@ -68,11 +68,18 @@ requirements with columns:
 - `criteria` – Criteria description
 - `context` – Context information
 
-## Additional Resources
+## DETECT Resources
 
-- [DETECT SysML v2 model (by Sensmetry)](https://github.com/sensmetry/detect)
+### SysML v2 version resources
+
+- [DETECT Conversion Blog Post](https://sensmetry.com/sysml-v1-to-sysml-v2-migration-of-detect-benefits-lessons-learned/)
+- [DETECT Conversion Presentation Slides](https://de-bok.org/asset/5d94da5258e91b5a91ff8ef13c67fea52620c00a)
+- [DETECT SysML v2 Model and Web App Source Code](https://github.com/sensmetry/detect)
+
+### SysML v1 version resources
+
 - [DETECT Infosheet](https://de-bok.org/asset/54489e0b638ea1d0564d408abf7c211c7ac4a423)
 - [DETECT User Guide](https://de-bok.org/asset/0be5bae06967d6deefb520564763a3575446d3ee)
-- [DETECT v1 overview](https://de-bok.org/asset/0275584048738dec328f6d2959641a041e9743c7)
+- [DETECT v1 Overview](https://de-bok.org/asset/0275584048738dec328f6d2959641a041e9743c7)
 - [DETECT Information in Excel](https://de-bok.org/asset/f6646eaee1e16b160a930acb0f7f8fb5d94b0980)
-- [DETECT SysML v1 Model File](https://de-bok.org/asset/f6646eaee1e16b160a930acb0f7f8fb5d94b0980)
+- [DETECT Model File](https://de-bok.org/asset/f6646eaee1e16b160a930acb0f7f8fb5d94b0980)
