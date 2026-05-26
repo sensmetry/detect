@@ -1,7 +1,8 @@
 {
   "name": "DETECT",
+  "publisher": "Sensmetry",
   "description": "DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoD and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem. This is a SysML v2 implementation by Sensmetry, adapted from the original SysML v1.6 model developed by the DEM&S team.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "license": "MIT",
   "maintainer": [
     "Sensmetry <opensource@sensmetry.com>",
@@ -20,44 +21,34 @@
   ],
   "usage": [
     {
-      "resource": "urn:kpar:function-library",
-      "versionConstraint": "^1.0.0"
+      "resource": "https://www.omg.org/spec/KerML/20250201/Data-Type-Library.kpar"
     },
     {
-      "resource": "urn:kpar:data-type-library",
-      "versionConstraint": "^1.0.0"
+      "resource": "https://www.omg.org/spec/KerML/20250201/Semantic-Library.kpar"
     },
     {
-      "resource": "urn:kpar:semantic-library",
-      "versionConstraint": "^1.0.0"
+      "resource": "https://www.omg.org/spec/KerML/20250201/Function-Library.kpar"
     },
     {
-      "resource": "urn:kpar:analysis-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Systems-Library.kpar"
     },
     {
-      "resource": "urn:kpar:geometry-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Analysis-Domain-Library.kpar"
     },
     {
-      "resource": "urn:kpar:metadata-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Cause-and-Effect-Domain-Library.kpar"
     },
     {
-      "resource": "urn:kpar:requirement-derivation-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Geometry-Domain-Library.kpar"
     },
     {
-      "resource": "urn:kpar:systems-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Metadata-Domain-Library.kpar"
     },
     {
-      "resource": "urn:kpar:cause-and-effect-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Quantities-and-Units-Domain-Library.kpar"
     },
     {
-      "resource": "urn:kpar:quantities-and-units-library",
-      "versionConstraint": "^2.0.0"
+      "resource": "https://www.omg.org/spec/SysML/20250201/Requirement-Derivation-Domain-Library.kpar"
     }
   ]
 }

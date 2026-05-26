@@ -27,15 +27,17 @@ The SysML v2 version of DETECT can be used in one of two ways:
   out the form, and download the filtered list of criteria and requirements.
   _This service is completely free._
 - **Locally** – Download this package, enter your data in the
-  `detect_input.sysml` file, use Syside Automator and the provided `detect.py`
+  `detect_input.sysml` file, and then use Syside Automator with the `detect.py`
   Python script to evaluate your system size and receive the filtered list of
-  criteria and requirements. _This approach requires a valid Syside Pro license.
-  For a free trial, go to [syside.sensmetry.com](https://syside.sensmetry.com)_
+  criteria and requirements. The script can be found in the [GitHub
+  repository](https://github.com/sensmetry/detect). _This approach requires a
+  valid Syside Pro license. For a free trial, go to
+  [syside.sensmetry.com](https://syside.sensmetry.com)_
 
 ## Output
 
-The tool generates two CSV files in the `Output/` directory (when using the tool
-locally) or for download (when using the tool online):
+The SysMLv2 model generates two CSV files in the `Output/` directory (when using
+the `detect.py` script locally) or for download (when using the tool online):
 
 - **criteria.csv** – Contains filtered evaluation criteria with columns:
   - `id` – Criteria identifier
@@ -50,13 +52,13 @@ locally) or for download (when using the tool online):
 
 ## Model Structure
 
-- **detect_input.sysml** – Main data entry point, includes DE ecosystem instance
-- **detect_criteria_list.sysml** – A model list of all weighted evaluation
+- **`detect_input.sysml`** – Main data entry point, includes DE ecosystem instance
+- **`detect_criteria_list.sysml`** – A model list of all weighted evaluation
   criteria
-- **detect_requirement_list.sysml** – A model list of all weighted Digital
+- **`detect_requirement_list.sysml`** – A model list of all weighted Digital
   Engineering Ecosystem requirements
-- **detect_definitions.sysml** – Core definitions and calculations
-- **detect_use_cases.sysml** – Use Cases model view for DETECT method.
+- **`detect_definitions.sysml`** – Core definitions and calculations
+- **`detect_use_cases.sysml`** – Use Cases model view for DETECT method.
 
 ## Use the Tool Locally
 
@@ -140,9 +142,10 @@ ui.run(
 
 #### Using Docker
 
-We provide a `Dockerfile` that builds an image with the webapp. The current
-Dockerfile assumes that you have a Syside license that allows for Offline /
-Air-gapped usage (for different types of Syside licenses, refer to
+We provide a `Dockerfile` that builds an image with the webapp in the [GitHub
+repo](https://github.com/sensmetry/detect). The current Dockerfile assumes that
+you have a Syside license that allows for Offline / Air-gapped usage (for
+different types of Syside licenses, refer to
 [documentation](https://docs.sensmetry.com/support/licensing.html#license-types)).
 Before building the Docker image, you should obtain a license file according to
 [Offline Licensing
