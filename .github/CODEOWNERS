@@ -1,0 +1,4 @@
+# Changes to what deploys, and how, need review from a repository admin.
+/.github/ @fNBU
+/deploy/ @fNBU
+/Dockerfile @fNBU
