@@ -18,3 +18,6 @@ Output
 
 # Never copy a licence into the image. Mount it at runtime instead.
 *.lic
+
+# Written by google-github-actions/auth into the checkout during deploys.
+gha-creds-*.json
