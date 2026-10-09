@@ -1,85 +1,34 @@
-# Digital Engineering Tool Evaluation Criteria Template (DETECT)
+# Digital Engineering Tool Evaluation Criteria Template (DETECT) v2
 
-DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework
-that helps organizations understand their Digital Engineering (DE) ecosystem,
-identify needs and gaps, and lower the barrier of entry to implementing
-effective DE in their workplace. Drawing on authoritative sources from DoD and
-industry, DETECT provides guidance for programs to use in developing and
-improving their DE ecosystem.
+DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoD and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem.
 
-The framework provides project managers, engineers, and analysts with two
-standardized templates: one for DE ecosystem requirements and one for tool
-evaluation criteria. These templates can be tailored using DETECT, ultimately
-assisting with DE ecosystem development and tool trade studies.
+Version 2 extends the framework from ecosystem sizing alone to three use cases: sizing, tool types by lifecycle phase, and tool types by job series.
 
-This tool is a webapp implementation of DETECT, adapted from the original SysML
-v1.6 model developed by the DEM&S team and dedicated to the public domain This
-webapp is based on the SysML v2 translation that was created by Sensmetry.
-
-The data (questions, available choices, criteria and requirements) shown on this
-webapp are automatically parsed from an underlying SysML v2 model by [Syside
-Automator](https://docs.sensmetry.com/automator/). The logic of system size
-calculation and the selection of applicable criteria and requirements according
-to the system size is also encoded in the underlying SysML v2 model that is then
-evaluated by [Syside Automator](https://docs.sensmetry.com/automator/). The
-webapp is an auto-generated user-friendly interface that automatically adapts if
-the SysML v2 models are changed.
+The data shown here — questions, available choices, lifecycle phases, job series, criteria, requirements and tool mappings — is parsed from an underlying SysML v2 model by [Syside Automator](https://docs.sensmetry.com/automator/). The sizing calculation, the selection of applicable criteria and requirements, and the mapping from selections to required tool types are all encoded in that model and evaluated by Syside.
 
 ## Getting Started
 
-This webapp guides you through a streamlined process to generate tailored
-requirements and evaluation criteria:
+Click `Start Configuration`, then work through the tabs. There is one tab per use case the model declares, named by the use case's short name and title.
 
-1. **Answer the Questions**: Use the dropdown interface to select parameters
-   that describe your environment, such as project scope, team size, complexity,
-   and organizational factors. Start by clicking the `Start Configuration`
-   button.
+**UC1, Ecosystem Sizing.** Answer the ten questions using the dropdowns, then click `Submit Configuration` to calculate your ecosystem size (Small, Medium or Large). Click `Process with System Size` to generate the tailored requirements and evaluation criteria for that size, and download either as CSV.
 
-2. **Automatic Sizing**: After answering all the questions and clicking `Submit
-   Configuration` button, the DETECT tool calculates your ecosystem size (Small,
-   Medium, or Large) based on your selections.
+**UC2, Tool Types by Lifecycle Phase.** Tick the lifecycle phases your ecosystem must support, grouped by acquisition phase, then click `Evaluate UC2`. The result lists every required tool type together with the phases that require it.
 
-3. **Generate Tailored Output**: Clicking the `Process with System Size` button
-   makes the tool select a customized set of Digital Engineering ecosystem
-   requirements and tool evaluation criteria aligned with the auto-calculated
-   size.
-
-4. **Review and Customize**: Review the generated requirements and criteria in
-   tables shown in the webapp. For more details, download them as CSV files. You
-   can further customize these lists for your specific project or tool trade
-   study.
-
-This process reduces the time practitioners need to make informed decisions and
-enables quicker development of robust Digital Engineering ecosystems.
+**UC3, Tool Types by Job Series.** Tick the job series your ecosystem must support, then click `Evaluate UC3`. The result lists every required tool type together with the roles that require it.
 
 ## Output Files
 
-**requirements.csv** – Contains filtered Digital Engineering Ecosystem
-requirements with columns:
+**requirements.csv** — Digital Engineering ecosystem requirements: `id`, `value` (weight at the calculated size), `description`.
 
-- `id` — Requirement identifier
-- `value` — Weight value for the calculated ecosystem size
-- `description` – Requirement description
+**criteria.csv** — tool evaluation criteria: `id`, `value`, `criteria`, `context`.
 
-**criteria.csv** – Contains filtered tool evaluation criteria with columns:
+**uc2_tools.csv** — required tool types by lifecycle phase: `tool_type`, `required_by`.
 
-- `id` – Criteria identifier
-- `value` – Weight value for the calculated ecosystem size
-- `criteria` – Criteria description
-- `context` – Context information
+**uc3_tools.csv** — required tool types by job series: `tool_type`, `required_by`.
 
 ## DETECT Resources
 
-### SysML v2 version resources
-
 - [DETECT Conversion Blog Post](https://sensmetry.com/sysml-v1-to-sysml-v2-migration-of-detect-benefits-lessons-learned/)
-- [DETECT Conversion Presentation Slides](https://de-bok.org/asset/5d94da5258e91b5a91ff8ef13c67fea52620c00a)
-- [DETECT SysML v2 Model and Web App Source Code](https://github.com/sensmetry/detect)
-
-### SysML v1 version resources
-
 - [DETECT Infosheet](https://de-bok.org/asset/54489e0b638ea1d0564d408abf7c211c7ac4a423)
 - [DETECT User Guide](https://de-bok.org/asset/0be5bae06967d6deefb520564763a3575446d3ee)
 - [DETECT v1 Overview](https://de-bok.org/asset/0275584048738dec328f6d2959641a041e9743c7)
-- [DETECT Information in Excel](https://de-bok.org/asset/f6646eaee1e16b160a930acb0f7f8fb5d94b0980)
-- [DETECT Model File](https://de-bok.org/asset/f6646eaee1e16b160a930acb0f7f8fb5d94b0980)

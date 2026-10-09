@@ -1,5 +1,8 @@
-.venv
+*.csv
+Output
 __pycache__
-sysand_env/
-output/
-syside-license.lic
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+*.lic

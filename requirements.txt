@@ -1,2 +1,0 @@
-nicegui
-syside==0.8.3

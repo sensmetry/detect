@@ -85,8 +85,8 @@ package DETECT_Sizing {
         }
         enum def LifecyclePhases_e specializes Attr_with_value {
             '1-2' { redefines value = 1; } // AMBIGUITY!!! (when the number of lifecycle phases ecosystem supports is '2')
-            '2 to 3' { redefines value = 2; } // AMBIGUITY!!! (when the number of lifecycle phases ecosystem supports is '2')
-            All { redefines value = 3; }
+            '3-4' { redefines value = 2; } // AMBIGUITY!!! (when the number of lifecycle phases ecosystem supports is '2')
+            'All 5' { redefines value = 3; }
             TBD { redefines value = 0; } // selection placeholder;
         }
         enum def ProjectDeliverables_e specializes Attr_with_value {
@@ -121,7 +121,7 @@ package DETECT_Sizing {
         /* A person using DETECT method to evaluate DE tool. */
     }
 
-    use case def DETECT_use_case_Def {
+    use case def DETECT_uc1_Def {
         attribute uc_status defined by status_e default status_e::Red;
     }
 

@@ -1,0 +1,48 @@
+[project]
+name = "detect-v2"
+version = "0.1.0"
+description = "SysML v2 implementation of DETECT v2: ecosystem sizing, tool types by lifecycle phase, and tool types by job series"
+requires-python = ">=3.12"
+dependencies = [
+    # Lower bounds are the versions this has actually been exercised against; uv.lock
+    # pins the exact build. syside is pre-1.0, so its minor releases may break.
+    "nicegui>=3.17",
+    "syside>=0.10.3,<0.11",
+]
+
+[tool.uv]
+# A flat application, not an importable package: detect.py and webapp_main.py are
+# modules at the repository root. This keeps uv from trying to build and install it.
+package = false
+
+[dependency-groups]
+dev = [
+    "mypy>=1.11",
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[tool.mypy]
+strict = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "TRY"]
+ignore = [
+    # The model-walking code raises ValueError when the model is not shaped the way it
+    # expects, following the convention v1 established. These are not argument type
+    # errors reported to a caller, so TypeError would be the wrong signal.
+    "TRY004",
+    # v1 raises ValueError with a message at the point of failure rather than defining an
+    # exception per failure mode, and the webapp shows those messages to the user.
+    "TRY003",
+    # The header markup carried over from v1 contains URLs that cannot be wrapped.
+    "E501",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# The interface deliberately catches every exception so that any failure is reported in
+# the page rather than leaving the user with an unresponsive button.
+"webapp_main.py" = ["BLE001"]

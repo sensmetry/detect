@@ -1,0 +1,30 @@
+{
+  "name": "DETECT v2",
+  // detect.py needs Python 3.12 or later.
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.13-bookworm",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "sensmetry.syside-modeler"
+      ]
+    }
+  },
+  "remoteEnv": {
+    // The uv install script puts uv in ~/.local/bin.
+    "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}",
+    // Syside needs a Pro licence as soon as it is imported, and none is in this repository.
+    // This passes the key through from the machine that opens the container.
+    "SYSIDE_LICENSE_KEY": "${localEnv:SYSIDE_LICENSE_KEY}"
+  },
+  "updateContentCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && ~/.local/bin/uv sync",
+  "forwardPorts": [
+    8080
+  ],
+  "portsAttributes": {
+    "8080": {
+      "label": "Webapp"
+    }
+  }
+}
