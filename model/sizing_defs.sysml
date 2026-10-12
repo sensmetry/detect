@@ -271,13 +271,7 @@ package DETECT_Sizing {
                  * leading to higher output and consistency.
                  */
             }
-            attribute <Q7> job_series {
-                doc Question
-                /* TBD */
-                doc Description
-                /* TBD */
-            }
-            attribute <Q8> enclaves : DETECT_enumerations::Enclaves_e {
+            attribute <Q7> enclaves : DETECT_enumerations::Enclaves_e {
                 doc Question
                 /* How many enclaves are needed to support the number of people, geographic
                  * locations, engineering domains, and collaboration partners for the DE
@@ -297,7 +291,7 @@ package DETECT_Sizing {
                  *   - Business constraints
                  */
             }
-            attribute <Q9> tenants : DETECT_enumerations::Tenants_e {
+            attribute <Q8> tenants : DETECT_enumerations::Tenants_e {
                 doc Question
                 /* Which set of situations most closely matches the DE ecosystem planned to be
                  * developed?
@@ -311,7 +305,7 @@ package DETECT_Sizing {
                  * - **Organizations**
                  */
             }
-            attribute <Q10> project_deliverables : DETECT_enumerations::ProjectDeliverables_e {
+            attribute <Q9> project_deliverables : DETECT_enumerations::ProjectDeliverables_e {
                 doc Question
                 /* What is the order of magnitude of deliverables anticipated? */
                 doc Description
@@ -329,7 +323,7 @@ package DETECT_Sizing {
                  * data products are required.
                  */
             }
-            attribute <Q11> storage : DETECT_enumerations::Storage_e {
+            attribute <Q10> storage : DETECT_enumerations::Storage_e {
                 doc Question
                 /* What is the order of magnitude of the amount of data that is anticipated to be
                  * stored?
