@@ -27,7 +27,7 @@ package DETECT_Use_Cases {
 
         objective {
             doc
-            /* Determine DE ecosystem Sizing and export weighted DE Ecosystem Tool Evaluation
+            /* Determine DE Ecosystem Sizing and export weighted DE Ecosystem Tool Evaluation
              * Criteria and Requirements.
              */
         }
@@ -47,8 +47,9 @@ package DETECT_Use_Cases {
 
         objective {
             doc
-            /* Determine DE ecosystem possible tool types and export lists of appropriate tool
-             * types per each necessary lifecycle phase.
+            /* Determine DE Ecosystem possible tool types from known lifecycle phases
+             * your effort must support, and export a list of appropriate tool
+             * types per each necessary phase.
              */
         }
 
@@ -63,8 +64,9 @@ package DETECT_Use_Cases {
 
         objective {
             doc
-            /* Determine DE ecosystem possible tool types and export lists of appropriate tool
-             * types per each involved job series.
+            /* Determine DE Ecosystem possible tool types from known job series
+             * your effort must involve, and export lists of appropriate tool
+             * types per each necessary job series.
              */
         }
 
