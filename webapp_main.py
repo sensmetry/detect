@@ -15,6 +15,7 @@ import syside
 from nicegui import ui
 
 from detect import (
+    TOOL_DEFINITIONS_FILENAME,
     CategoryName,
     Ecosystem,
     EntryKind,
@@ -24,11 +25,14 @@ from detect import (
     ProfileMapping,
     Question,
     Rows,
+    ToolDefinition,
     UseCase,
     entry_rows,
     format_display_name,
     parse,
     parse_model,
+    tool_definition_rows,
+    tool_definitions,
     tool_rows,
 )
 
@@ -247,8 +251,14 @@ def use_case_heading(use_case: UseCase) -> str:
     return f"{use_case.id}: {use_case.title}"
 
 
-def _profile_panel(use_case: UseCase, profile: Profile) -> None:
-    """Build the interface for a use case that maps boolean selections to tool types."""
+def _profile_panel(
+    use_case: UseCase, profile: Profile, definitions: Sequence[ToolDefinition]
+) -> None:
+    """Build the interface for a use case that maps boolean selections to tool types.
+
+    Besides evaluating the selections, the panel can list every tool type with its
+    documentation, whatever is selected.
+    """
     mapping = cached_profile_mapping(profile)
     selections: dict[FlagName, bool] = {flag.name: False for flag in mapping.flags}
     heading = use_case_heading(use_case)
@@ -317,8 +327,33 @@ def _profile_panel(use_case: UseCase, profile: Profile) -> None:
             )
             announce_results(results_container, "Evaluation failed")
 
+    definitions_container = create_results_container("mt-4", f"{heading} all tool types")
+    definitions_container.set_visibility(False)
+
+    def show_all_tool_types() -> None:
+        """List every tool type with its documentation, with a CSV download."""
+        header, rows = tool_definition_rows(definitions)
+        download = csv_bytes(header, rows)
+        summary = f"{len(rows)} tool types"
+        definitions_container.clear()
+        definitions_container.set_visibility(True)
+        with definitions_container:
+            with ui.row().classes("w-full justify-between items-center mb-2"):
+                ui.html(
+                    "<div class='p-2 bg-blue-100 border-l-4 border-blue-500 rounded'>"
+                    f"<strong>All {summary}</strong></div>",
+                    sanitize=False,
+                )
+                ui.button(
+                    "Download CSV",
+                    on_click=lambda: ui.download(download, filename=TOOL_DEFINITIONS_FILENAME),
+                ).classes(DOWNLOAD_BUTTON)
+            create_table(header, ["Tool Type", "Description"], [30, 70], rows)
+        announce_results(definitions_container, f"Showing all {summary}")
+
     with ui.row().classes("w-full items-center justify-center gap-4"):
         ui.button(f"Evaluate {use_case.id}", on_click=evaluate).classes(PRIMARY_BUTTON)
+        ui.button("Show All Tool Types", on_click=show_all_tool_types).classes(PRIMARY_BUTTON)
 
 
 @ui.page("/tool")
@@ -326,7 +361,9 @@ def main_page() -> None:
     """Configuration page carrying one tab per use case the model declares."""
     navbar()
 
-    declared = parse(parse_model())
+    model = parse_model()
+    declared = parse(model)
+    definitions = tool_definitions(model)
 
     with (
         ui.row().classes("w-full justify-center p-4 sm:p-8 bg-gray-50 min-h-screen"),
@@ -371,7 +408,7 @@ def main_page() -> None:
                     if isinstance(use_case.subject, Ecosystem):
                         _sizing_panel(use_case, use_case.subject)
                     else:
-                        _profile_panel(use_case, use_case.subject)
+                        _profile_panel(use_case, use_case.subject, definitions)
                 wrappers[str(tab.props["name"])] = wrapper
 
         hide_inactive_panels(str(first_tab.props["name"]))

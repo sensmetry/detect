@@ -184,3 +184,22 @@ def test_input_files_are_readable(profiles: list[Profile]) -> None:
     """The selections in the upstream input files can be read back for the CLI path."""
     for profile in profiles:
         assert isinstance(profile.selections(), list)
+
+
+def test_every_tool_type_is_documented() -> None:
+    """Every tool type literal carries a non-empty `Documentation` comment, in enumeration order."""
+    model = detect.parse_model()
+    definitions = detect.tool_definitions(model)
+    order = detect._tool_type_order(model)
+    assert [definition.tool_type for definition in definitions] == sorted(
+        order, key=order.__getitem__
+    )
+    assert all(definition.documentation for definition in definitions)
+
+
+def test_tool_definition_rows_list_every_tool_type() -> None:
+    """The tool definitions output has one row per tool type, under its declared header."""
+    definitions = detect.tool_definitions(detect.parse_model())
+    header, rows = detect.tool_definition_rows(definitions)
+    assert header == ["tool_type", "documentation"]
+    assert len(rows) == len(definitions)
