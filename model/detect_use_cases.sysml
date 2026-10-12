@@ -20,14 +20,14 @@ package DETECT_Use_Cases {
     private import DETECT_Input_Job_Series;
     private import DETECT_Job_Series;
 
-    use case <UC1> 'Determine DE ecosystem Sizing' defined by DETECT_Sizing::DETECT_uc1_Def {
+    use case <UC1> 'Ecosystem Sizing' defined by DETECT_Sizing::DETECT_uc1_Def {
         subject redefines DETECT_Input::de_ecosystem; // right-click on "de_ecosystem", select "Go to Definition" to navigate to model data entry inputs
         actor engineer defined by DETECT_Sizing::DETECT_user;
         actor manager defined by DETECT_Sizing::DETECT_user;
 
         objective {
             doc
-            /* Determine DE ecosystem Sizing and export weighted DE Ecosystem Tool Evaluation
+            /* Determine DE Ecosystem Sizing and export weighted DE Ecosystem Tool Evaluation
              * Criteria and Requirements.
              */
         }
@@ -39,7 +39,7 @@ package DETECT_Use_Cases {
         attribute redefines uc_status = DETECT_Sizing::status_e::Green; // implemented
     }
 
-    use case <UC2> 'Identify DE ecosystem Tool Types Based on Lifecycle Phases'
+    use case <UC2> 'Tool Types by Lifecycle Phase'
         defined by DETECT_Lifecycle_Phases::DETECT_uc2_Def {
         subject redefines DETECT_Input_Lifecycle_Phases::ecosystem_tool_profile;
         actor engineer defined by DETECT_Lifecycle_Phases::DETECT_user_lcp;
@@ -47,15 +47,16 @@ package DETECT_Use_Cases {
 
         objective {
             doc
-            /* Determine DE ecosystem possible tool types and export lists of appropriate tool
-             * types per each necessary lifecycle phase.
+            /* Determine DE Ecosystem possible tool types from known lifecycle phases
+             * your effort must support, and export a list of appropriate tool
+             * types per each necessary phase.
              */
         }
 
         attribute redefines uc_status = DETECT_Lifecycle_Phases::status_e_lcp::Green; // implemented
     }
 
-    use case <UC3> 'Determine DE ecosystem Tools Based on Job Series'
+    use case <UC3> 'Tool Types by Job Series'
         defined by DETECT_Job_Series::DETECT_uc3_Def {
         subject redefines DETECT_Input_Job_Series::job_series_tool_profile;
         actor manager defined by DETECT_Job_Series::DETECT_user_jobs;
@@ -63,8 +64,9 @@ package DETECT_Use_Cases {
 
         objective {
             doc
-            /* Determine DE ecosystem possible tool types and export lists of appropriate tool
-             * types per each involved job series.
+            /* Determine DE Ecosystem possible tool types from known job series
+             * your effort must involve, and export lists of appropriate tool
+             * types per each necessary job series.
              */
         }
 

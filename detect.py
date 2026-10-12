@@ -24,6 +24,10 @@ MODEL_DIR = "model"
 OUTPUT_DIR = "Output"
 
 TOOL_TYPE_ENUMERATION = "Tool_Type_e"
+# The name of the comment documenting each tool type literal.
+TOOL_TYPE_DOCUMENTATION = "Documentation"
+# The name of the CSV listing every tool type with its documentation.
+TOOL_DEFINITIONS_FILENAME = "tool_definitions.csv"
 
 # Weights are exact rationals in the model. They are rounded only when written out.
 WEIGHT_DECIMALS = 4
@@ -590,16 +594,59 @@ class Profile:
         return Profile(definition, part, flags, tool_attributes, _tool_type_order(model))
 
 
-def _tool_type_order(model: syside.Model) -> dict[ToolTypeName, int]:
-    """Return the position of each literal in the tool type enumeration."""
+def _tool_type_enumeration(model: syside.Model) -> syside.EnumerationDefinition:
+    """Return the enumeration declaring every tool type."""
     for enumeration in model.nodes(syside.EnumerationDefinition):
         if enumeration.name == TOOL_TYPE_ENUMERATION:
-            return {
-                ToolTypeName(literal.name): position
-                for position, literal in enumerate(enumeration.enumerated_values.collect())
-                if literal.name is not None
-            }
+            return enumeration
     raise ValueError(f"Enumeration '{TOOL_TYPE_ENUMERATION}' not found")
+
+
+def _tool_type_order(model: syside.Model) -> dict[ToolTypeName, int]:
+    """Return the position of each literal in the tool type enumeration."""
+    return {
+        ToolTypeName(literal.name): position
+        for position, literal in enumerate(
+            _tool_type_enumeration(model).enumerated_values.collect()
+        )
+        if literal.name is not None
+    }
+
+
+@dataclass(frozen=True)
+class ToolDefinition:
+    """A tool type with the documentation the model gives it.
+
+    Attributes:
+        tool_type: The tool type literal's name
+        documentation: The body of the literal's `Documentation` comment
+    """
+
+    tool_type: ToolTypeName
+    documentation: str
+
+
+def tool_definitions(model: syside.Model) -> list[ToolDefinition]:
+    """Return every tool type with its documentation, in enumeration order.
+
+    Raises:
+        ValueError: If a literal is unnamed or has no `Documentation` comment
+    """
+    return [
+        ToolDefinition(
+            ToolTypeName(require(literal.name, "Tool type literal name")),
+            documentation(literal, TOOL_TYPE_DOCUMENTATION),
+        )
+        for literal in _tool_type_enumeration(model).enumerated_values.collect()
+    ]
+
+
+def tool_definition_rows(definitions: Sequence[ToolDefinition]) -> tuple[Header, Rows]:
+    """Return the header and rows listing every tool type with its documentation."""
+    return (
+        ["tool_type", "documentation"],
+        [[definition.tool_type, definition.documentation] for definition in definitions],
+    )
 
 
 def format_display_name(raw_name: str) -> str:
