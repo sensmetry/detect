@@ -2,29 +2,38 @@
 
 DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoD and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem.
 
-Version 2 extends the framework from ecosystem sizing alone to three use cases: sizing, tool types by lifecycle phase, and tool types by job series.
+Version 2 extends the framework from ecosystem sizing alone to three use cases (UCs): sizing, tool types by lifecycle phase, and tool types by job series.
 
 The data shown here — questions, available choices, lifecycle phases, job series, criteria, requirements and tool mappings — is parsed from an underlying SysML v2 model by [Syside Automator](https://docs.sensmetry.com/automator/). The sizing calculation, the selection of applicable criteria and requirements, and the mapping from selections to required tool types are all encoded in that model and evaluated by Syside.
 
 ## Getting Started
 
-Click `Start Configuration`, then work through the tabs. There is one tab per use case the model declares, named by the use case's short name and title.
+Click `Start Configuration`, then work through the tabs. Each tab signifies one use case, wherein the user will complete a short questionnaire to produce an output of tailored DOW guidance. These use cases are independent, and may be completed on their own or in tandem with the others.
 
-**UC1, Ecosystem Sizing.** Answer the ten questions using the dropdowns, then click `Submit Configuration` to calculate your ecosystem size (Small, Medium or Large). Click `Process with System Size` to generate the tailored requirements and evaluation criteria for that size, and download either as CSV.
+**UC1, Ecosystem Sizing.** Built with trade studies in mind, to provide criteria and requirements to practitioners for their further evaluation and discernment. Answer the ten questions using the dropdowns, then click `Submit Configuration` to calculate your ecosystem size (Small, Medium or Large). Click `Process with System Size` to generate the tailored requirements and evaluation criteria for that size, where you can download either list as a CSV.
 
-**UC2, Tool Types by Lifecycle Phase.** Tick the lifecycle phases your ecosystem must support, grouped by acquisition phase, then click `Evaluate UC2`. The result lists every required tool type together with the phases that require it.
+**UC2, Tool Types by Lifecycle Phase.** Built with the project manager in mind to evaluate ecosystem capabilities. Tick the lifecycle phases your ecosystem must support, grouped by acquisition phase, then click `Evaluate UC2`. The result lists every required tool type together with the phases that require it. Click `Show All Tool Types` to reveal the full list of possible tool types along with their descriptions, which can be downloaded as a CSV.
 
-**UC3, Tool Types by Job Series.** Tick the job series your ecosystem must support, then click `Evaluate UC3`. The result lists every required tool type together with the roles that require it.
+**UC3, Tool Types by Job Series.** Built with the project manager in mind to evaluate ecosystem capabilities. Tick the job series your ecosystem must support, then click `Evaluate UC3`. The result lists every required tool type together with the roles that require it. Click `Show All Tool Types` to reveal the full list of possible tool types along with their descriptions, which can be downloaded as a CSV.
 
 ## Output Files
 
+[UC1]
 **requirements.csv** — Digital Engineering ecosystem requirements: `id`, `value` (weight at the calculated size), `description`.
 
-**criteria.csv** — tool evaluation criteria: `id`, `value`, `criteria`, `context`.
+**criteria.csv** — Tool evaluation criteria: `id`, `value`, `criteria`, `context`.
 
-**uc2_tools.csv** — required tool types by lifecycle phase: `tool_type`, `required_by`.
+[UC2]
 
-**uc3_tools.csv** — required tool types by job series: `tool_type`, `required_by`.
+**uc2_tools.csv** — Required tool types by lifecycle phase: `tool_type`, `required_by`.
+
+**tool_definitions.csv** — List of all tool types with their descriptions: `tool_type`, `documentation`.
+
+[UC3]
+
+**uc3_tools.csv** — Required tool types by job series: `tool_type`, `required_by`.
+
+**tool_definitions.csv** — List of all tool types with their descriptions: `tool_type`, `documentation`.
 
 ## DETECT Resources
 
