@@ -56,7 +56,7 @@ package DETECT_Use_Cases {
         attribute redefines uc_status = DETECT_Lifecycle_Phases::status_e_lcp::Green; // implemented
     }
 
-    use case <UC3> 'Tools Types by Job Series'
+    use case <UC3> 'Tool Types by Job Series'
         defined by DETECT_Job_Series::DETECT_uc3_Def {
         subject redefines DETECT_Input_Job_Series::job_series_tool_profile;
         actor manager defined by DETECT_Job_Series::DETECT_user_jobs;
