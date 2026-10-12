@@ -20,7 +20,7 @@ package DETECT_Use_Cases {
     private import DETECT_Input_Job_Series;
     private import DETECT_Job_Series;
 
-    use case <UC1> 'Determine DE ecosystem Sizing' defined by DETECT_Sizing::DETECT_uc1_Def {
+    use case <UC1> 'Ecosystem Sizing' defined by DETECT_Sizing::DETECT_uc1_Def {
         subject redefines DETECT_Input::de_ecosystem; // right-click on "de_ecosystem", select "Go to Definition" to navigate to model data entry inputs
         actor engineer defined by DETECT_Sizing::DETECT_user;
         actor manager defined by DETECT_Sizing::DETECT_user;
@@ -39,7 +39,7 @@ package DETECT_Use_Cases {
         attribute redefines uc_status = DETECT_Sizing::status_e::Green; // implemented
     }
 
-    use case <UC2> 'Identify DE ecosystem Tool Types Based on Lifecycle Phases'
+    use case <UC2> 'Tool Types by Lifecycle Phase'
         defined by DETECT_Lifecycle_Phases::DETECT_uc2_Def {
         subject redefines DETECT_Input_Lifecycle_Phases::ecosystem_tool_profile;
         actor engineer defined by DETECT_Lifecycle_Phases::DETECT_user_lcp;
@@ -55,7 +55,7 @@ package DETECT_Use_Cases {
         attribute redefines uc_status = DETECT_Lifecycle_Phases::status_e_lcp::Green; // implemented
     }
 
-    use case <UC3> 'Determine DE ecosystem Tools Based on Job Series'
+    use case <UC3> 'Tools Types by Job Series'
         defined by DETECT_Job_Series::DETECT_uc3_Def {
         subject redefines DETECT_Input_Job_Series::job_series_tool_profile;
         actor manager defined by DETECT_Job_Series::DETECT_user_jobs;
