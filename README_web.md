@@ -18,18 +18,19 @@ Click `Start Configuration`, then work through the tabs. Each tab signifies one 
 
 ## Output Files
 
-[UC1]
+### UC1
+
 **requirements.csv** — Digital Engineering ecosystem requirements: `id`, `value` (weight at the calculated size), `description`.
 
 **criteria.csv** — Tool evaluation criteria: `id`, `value`, `criteria`, `context`.
 
-[UC2]
+### UC2
 
 **uc2_tools.csv** — Required tool types by lifecycle phase: `tool_type`, `required_by`.
 
 **tool_definitions.csv** — List of all tool types with their descriptions: `tool_type`, `documentation`.
 
-[UC3]
+### UC3
 
 **uc3_tools.csv** — Required tool types by job series: `tool_type`, `required_by`.
 
