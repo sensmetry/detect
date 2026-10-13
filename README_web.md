@@ -1,6 +1,6 @@
 # Digital Engineering Tool Evaluation Criteria Template (DETECT) v2
 
-DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoD and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem.
+DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework that helps organizations understand their Digital Engineering (DE) ecosystem, identify needs and gaps, and lower the barrier of entry to implementing effective DE in their workplace. Drawing on authoritative sources from DoW and industry, DETECT provides guidance for programs to use in developing and improving their DE ecosystem.
 
 Version 2 extends the framework from ecosystem sizing alone to three use cases (UCs): sizing, tool types by lifecycle phase, and tool types by job series.
 

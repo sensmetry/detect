@@ -369,7 +369,7 @@ package DETECT_Criteria_List {
             /* Does the tool support automated marking of classified information? */
             doc Context
             /* Automated classification management in digital engineering tools is vital for ensuring data is handled according to its security classification, reducing the risk of unauthorized access or breaches. It helps organizations comply with security policies by automatically tagging and restricting data based on its classification, simplifying workflows while enhancing compliance. Unlike IP and data rights management, which focuses on ownership and usage rights, classification management addresses national security and organizational confidentiality requirements.
-             * Attributes to consider include integration with security frameworks (e.g., NIST, DoD classifications) and dynamic data tagging capabilities. For example, a tool that automatically labels documents as "Confidential" or "Top Secret" and enforces access restrictions based on user clearance levels ensures secure data handling.
+             * Attributes to consider include integration with security frameworks (e.g., NIST, DoW classifications) and dynamic data tagging capabilities. For example, a tool that automatically labels documents as "Confidential" or "Top Secret" and enforces access restrictions based on user clearance levels ensures secure data handling.
              */
 
             attribute redefines weight = 1.0 / size(criteria_3_subcriteria);
