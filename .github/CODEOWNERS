@@ -1,7 +1,7 @@
-# Every change needs review from one of these.
-* @fNBU @simonas-drauksas-sensmetry
+# Every change needs review from this owner.
+* @fNBU
 
-# Changes to what deploys, and how, need review from one of these admins.
-/.github/ @fNBU @simonas-drauksas-sensmetry
-/deploy/ @fNBU @simonas-drauksas-sensmetry
-/Dockerfile @fNBU @simonas-drauksas-sensmetry
+# Changes to what deploys, and how, need review from this admin.
+/.github/ @fNBU
+/deploy/ @fNBU
+/Dockerfile @fNBU
