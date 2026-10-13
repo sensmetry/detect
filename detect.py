@@ -23,6 +23,8 @@ import syside
 MODEL_DIR = "model"
 OUTPUT_DIR = "Output"
 
+FEEDBACK_PACKAGE = "DETECT_Feedback"
+
 TOOL_TYPE_ENUMERATION = "Tool_Type_e"
 # The name of the comment documenting each tool type literal.
 TOOL_TYPE_DOCUMENTATION = "Documentation"
@@ -40,6 +42,9 @@ FlagName = NewType("FlagName", str)
 
 ToolTypeName = NewType("ToolTypeName", str)
 """Name of a `Tool_Type_e` enumeration literal."""
+
+EmailAddress = NewType("EmailAddress", str)
+"""An email address, as declared in the model."""
 
 Header = list[str]
 Rows = list[list[object]]
@@ -646,6 +651,44 @@ def tool_definition_rows(definitions: Sequence[ToolDefinition]) -> tuple[Header,
     return (
         ["tool_type", "documentation"],
         [[definition.tool_type, definition.documentation] for definition in definitions],
+    )
+
+
+# --- Feedback ------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class FeedbackContact:
+    """Where user feedback is sent.
+
+    Attributes:
+        email: The recipient address
+        attention: The attention line naming the team that reads the feedback
+    """
+
+    email: EmailAddress
+    attention: str
+
+
+def feedback_contact(model: syside.Model) -> FeedbackContact:
+    """Return the feedback contact declared in the `DETECT_Feedback` package.
+
+    Raises:
+        ValueError: If the package or one of its attributes is missing, or an attribute
+            does not evaluate to a string
+    """
+    for package in model.nodes(syside.Package):
+        if package.name == FEEDBACK_PACKAGE:
+            break
+    else:
+        raise ValueError(f"Package '{FEEDBACK_PACKAGE}' not found")
+
+    def string_attribute(attribute_name: str) -> str:
+        attribute = member(package, attribute_name, syside.AttributeUsage)
+        return evaluate_required(value_expression(attribute), str, f"'{attribute_name}'")
+
+    return FeedbackContact(
+        EmailAddress(string_attribute("feedback_email")), string_attribute("feedback_attention")
     )
 
 
