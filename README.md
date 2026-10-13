@@ -1,13 +1,13 @@
 # Digital Engineering Tool Evaluation Criteria Template (DETECT)
 
-SysML v2 implementation of the DoD/DoW
+SysML v2 implementation of the DoW
 [DETECT](https://de-bok.org/asset/79686e328d91955163060b984e211ee05c774173)
 framework for digital engineering ecosystem sizing and tool evaluation.
 
 DETECT (Digital Engineering Tool Evaluation Criteria Template) is a framework
 that helps organizations understand their Digital Engineering (DE) ecosystem,
 identify needs and gaps, and lower the barrier of entry to implementing
-effective DE in their workplace. Drawing on authoritative sources from DoD/DoW
+effective DE in their workplace. Drawing on authoritative sources from DoW
 and industry, DETECT provides guidance for programs to use in developing and
 improving their DE ecosystem.
 
