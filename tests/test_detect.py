@@ -5,6 +5,7 @@ holds no model files.
 """
 
 import os
+import urllib.parse
 
 import pytest
 
@@ -203,3 +204,21 @@ def test_tool_definition_rows_list_every_tool_type() -> None:
     header, rows = detect.tool_definition_rows(definitions)
     assert header == ["tool_type", "documentation"]
     assert len(rows) == len(definitions)
+
+
+def test_feedback_contact_is_read_from_the_model() -> None:
+    """The feedback links use the address and attention line the model declares."""
+    contact = detect.feedback_contact(detect.parse_model())
+    assert contact.email == "osd-sea@mail.mil"
+    assert contact.attention == "Attn: DEM&S"
+
+
+def test_feedback_mailto_carries_the_attention_line_and_page() -> None:
+    """The subject names the attention line and the body names the page."""
+    contact = detect.FeedbackContact(detect.EmailAddress("a@example.mil"), "Attn: X&Y")
+    link = webapp_main.feedback_mailto(contact, "Home")
+    address, query = link.removeprefix("mailto:").split("?", 1)
+    fields = urllib.parse.parse_qs(query)
+    assert address == "a@example.mil"
+    assert fields["subject"] == ["Attn: X&Y - DETECT feedback"]
+    assert fields["body"][0].startswith("Attn: X&Y\n\nPage: Home\n")

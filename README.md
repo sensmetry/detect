@@ -28,6 +28,8 @@ The evaluator loads every `.sysml` file in `model/`.
 
 The command line path reads your answers out of the model files themselves: set the sizing attributes in `model/sizing_input.sysml` away from `TBD`, and set the boolean flags in `model/lifecycle_phase_input.sysml` and `model/job_series_input.sysml`. The webapp writes the same answers into an in-memory copy of the model instead, so it leaves the files alone.
 
+The webapp's "Feedback" links send email to the address and attention line declared in `model/feedback.sysml`. Edit that file to change where feedback goes.
+
 ### Optionally, in a dev container
 
 `.devcontainer/` describes a VS Code dev container with Python, uv, the dependencies and the Syside extension installed. Using it is optional, and it needs two things the steps above do not:

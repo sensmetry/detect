@@ -9,6 +9,7 @@ import csv
 import html
 import io
 import os
+import urllib.parse
 from collections.abc import Sequence
 
 import syside
@@ -19,6 +20,7 @@ from detect import (
     CategoryName,
     Ecosystem,
     EntryKind,
+    FeedbackContact,
     FlagName,
     Header,
     Profile,
@@ -28,6 +30,7 @@ from detect import (
     ToolDefinition,
     UseCase,
     entry_rows,
+    feedback_contact,
     format_display_name,
     parse,
     parse_model,
@@ -61,6 +64,32 @@ PLACEHOLDER_VALUE = 0
 # answers into it. A profile mapping holds only names, not model elements, and depends
 # only on the profile's definition, so it is built once per definition and shared.
 _profile_mappings: dict[str, ProfileMapping] = {}
+
+
+_feedback_contact: FeedbackContact | None = None
+
+
+def cached_feedback_contact() -> FeedbackContact:
+    """Return the feedback contact, reading it from the model on first use."""
+    global _feedback_contact
+    if _feedback_contact is None:
+        _feedback_contact = feedback_contact(parse_model())
+    return _feedback_contact
+
+
+def feedback_mailto(contact: FeedbackContact, page_name: str) -> str:
+    """Build a mailto link whose subject and body carry the attention line and the page."""
+    body = (
+        f"{contact.attention}\n\n"
+        f"Page: {page_name}\n\n"
+        "What were you trying to do?\n\n\n"
+        "What happened, or what would you like changed?\n\n"
+    )
+    query = urllib.parse.urlencode(
+        {"subject": f"{contact.attention} - DETECT feedback", "body": body},
+        quote_via=urllib.parse.quote,
+    )
+    return f"mailto:{contact.email}?{query}"
 
 
 def cached_profile_mapping(profile: Profile) -> ProfileMapping:
@@ -165,18 +194,34 @@ def create_heading(text: str, level: int, classes: str) -> ui.html:
     return ui.html(html.escape(text), tag=f"h{level}").classes(classes)
 
 
-def create_footer() -> None:
-    """Create the footer shown on every page."""
+def create_footer(page_name: str) -> None:
+    """Create the footer shown on every page.
+
+    Besides the link, the footer shows the feedback address as text, for visitors whose
+    browser has no mail client to open.
+    """
+    contact = cached_feedback_contact()
     with ui.column().classes(
         "w-full items-center justify-center px-4 py-0.5 mt-6 border-t border-gray-200 gap-1"
     ):
+        with ui.row().classes("items-center gap-1 text-sm text-gray-600 mt-2"):
+            ui.icon("feedback").props('aria-hidden="true"')
+            ui.label("Questions or suggestions?")
+            ui.link(
+                f"Send feedback to {contact.email} ({contact.attention})",
+                feedback_mailto(contact, page_name),
+            ).classes("underline").style(f"color: {PRIMARY_COLOR}")
         ui.markdown(f"\nWebapp version {WEBAPP_VERSION}").classes("text-sm text-gray-600")
         ui.markdown("\nCopyright © 2026 Sensmetry").classes("text-sm text-gray-600")
         ui.image("images/Sensmetry_logo-02.svg").classes("max-w-[200px]").props('alt="Sensmetry"')
 
 
-def navbar() -> None:
-    """Create the header shown on every page."""
+def navbar(page_name: str) -> None:
+    """Create the header shown on every page.
+
+    The page name is filled into the body of the feedback email.
+    """
+    contact = cached_feedback_contact()
     ui.colors(primary=PRIMARY_COLOR)
     ui.add_head_html(
         """
@@ -199,6 +244,17 @@ def navbar() -> None:
 
         with ui.row().classes("items-center gap-4 text-h6"):
             ui.html(
+                f"""
+                <a href="{html.escape(feedback_mailto(contact, page_name))}"
+                   class="text-white no-underline hover:underline font-bold inline-flex items-center gap-1 text-base"
+                   aria-label="Send feedback by email to {html.escape(contact.email)}">
+                    <i class="material-icons text-base" aria-hidden="true">feedback</i>
+                    Feedback
+                </a>
+            """,
+                sanitize=False,
+            )
+            ui.html(
                 """
                 Powered by
                 <a href="https://syside.sensmetry.com/" class="text-white no-underline hover:underline inline-flex items-center gap-1">
@@ -213,7 +269,7 @@ def navbar() -> None:
 @ui.page("/")
 def landing_page() -> None:
     """Landing page holding the documentation."""
-    navbar()
+    navbar("Home")
 
     ui.add_head_html("""
         <style>
@@ -243,7 +299,7 @@ def landing_page() -> None:
                 PRIMARY_BUTTON
             )
 
-        create_footer()
+        create_footer("Home")
 
 
 def use_case_heading(use_case: UseCase) -> str:
@@ -359,7 +415,7 @@ def _profile_panel(
 @ui.page("/tool")
 def main_page() -> None:
     """Configuration page carrying one tab per use case the model declares."""
-    navbar()
+    navbar("Configuration")
 
     model = parse_model()
     declared = parse(model)
@@ -413,7 +469,7 @@ def main_page() -> None:
 
         hide_inactive_panels(str(first_tab.props["name"]))
 
-        create_footer()
+        create_footer("Configuration")
 
 
 def _sizing_panel(use_case: UseCase, ecosystem: Ecosystem) -> None:
