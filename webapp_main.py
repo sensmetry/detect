@@ -11,10 +11,15 @@ from detect import (
     Criteria,
     get_ecosystem_sysml_element,
     no_TBD_values,
+    get_feedback_contact,
+    FeedbackContact,
 )
 import os
 import io
 import csv
+import functools
+import html
+import urllib.parse
 from typing import Any
 
 
@@ -397,18 +402,62 @@ FORM_SUBTITLE = "Select your configuration options from the dropdowns below. Bas
 # --- NiceGUI Layout ---
 
 
-def create_footer() -> None:
-    """Create a consistent footer for all pages."""
+@functools.cache
+def feedback_contact() -> FeedbackContact:
+    """Feedback contact details read once from the SysML model."""
+    return get_feedback_contact(parse_model())
+
+
+def feedback_mailto(page_name: str) -> str:
+    """Build a mailto: link with the attention line and page name prefilled.
+
+    Args:
+        page_name: Name of the page the feedback link was clicked on
+    """
+    contact = feedback_contact()
+    subject = f"{contact.attention} - DETECT feedback"
+    body = (
+        f"{contact.attention}\n\n"
+        f"Page: {page_name}\n\n"
+        "What were you trying to do?\n\n\n"
+        "What happened, or what would you like changed?\n\n"
+    )
+    query = urllib.parse.urlencode(
+        {"subject": subject, "body": body}, quote_via=urllib.parse.quote
+    )
+    return f"mailto:{contact.email}?{query}"
+
+
+def create_footer(page_name: str) -> None:
+    """Create a consistent footer for all pages.
+
+    Args:
+        page_name: Name of the current page, prefilled in feedback emails
+    """
+    contact = feedback_contact()
     with ui.column().classes(
         "w-full items-center justify-center px-4 py-0.5 mt-6 border-t border-gray-200 gap-1"
     ):
+        # Plain-text address as well as the link, for users without a mail client
+        with ui.row().classes("items-center gap-1 text-sm text-gray-600 mt-2"):
+            ui.icon("feedback").props('aria-hidden="true"')
+            ui.label("Questions or suggestions?")
+            ui.link(
+                f"Send feedback to {contact.email} ({contact.attention})",
+                feedback_mailto(page_name),
+            ).classes("text-indigo-700 underline hover:text-indigo-900")
         # Sensmetry logo - SVG version, fully visible
         ui.markdown("\nWebapp version 1.2").classes("text-sm text-gray-600")
         ui.markdown("\nCopyright © 2025 Sensmetry").classes("text-sm text-gray-600")
         ui.image("images/Sensmetry_logo-02.svg").classes("max-w-[200px]")
 
 
-def navbar() -> None:
+def navbar(page_name: str) -> None:
+    """Create the persistent header for all pages.
+
+    Args:
+        page_name: Name of the current page, prefilled in feedback emails
+    """
     ui.add_head_html(
         """
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -434,6 +483,17 @@ def navbar() -> None:
         # Right side container
         with ui.row().classes("items-center gap-4 text-h6"):
             ui.html(
+                f"""
+                <a href="{html.escape(feedback_mailto(page_name))}"
+                   class="text-white no-underline hover:underline font-bold inline-flex items-center gap-1 text-base"
+                   aria-label="Send feedback by email to {html.escape(feedback_contact().email)}">
+                    <i class="material-icons text-base" aria-hidden="true">feedback</i>
+                    Feedback
+                </a>
+            """,
+                sanitize=False,
+            )
+            ui.html(
                 """
                 Powered by
                 <a href="https://syside.sensmetry.com/" class="text-white no-underline hover:underline inline-flex items-center gap-1">
@@ -449,7 +509,7 @@ def navbar() -> None:
 def landing_page() -> None:
     """Landing page with documentation."""
     # Persistent header
-    navbar()
+    navbar("Home")
 
     # Add custom CSS for smaller heading sizes
     ui.add_head_html("""
@@ -484,13 +544,13 @@ def landing_page() -> None:
                 )
 
             # Footer
-            create_footer()
+            create_footer("Home")
 
 
 @ui.page("/tool")
 def main_page() -> None:
     # Persistent header
-    navbar()
+    navbar("Configuration")
 
     ## User state
     # 1. Load and augment the options.
@@ -781,7 +841,7 @@ def main_page() -> None:
             tableviews_container.set_visibility(False)
 
             # Footer
-            create_footer()
+            create_footer("Configuration")
 
 
 # Since we are running this in a Docker container, we ensure the host is '0.0.0.0'

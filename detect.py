@@ -19,6 +19,7 @@ import csv
 import os
 import re
 import syside
+from typing import NamedTuple
 
 
 SYSML_FILES = [
@@ -208,6 +209,52 @@ def parse_model() -> syside.Model:
         for error in diagnostics.errors:
             print(error)
     return model
+
+
+class FeedbackContact(NamedTuple):
+    """Where user feedback is sent, as defined in the DETECT_feedback package."""
+
+    email: str
+    attention: str
+
+
+def get_feedback_contact(model: syside.Model) -> FeedbackContact:
+    """Read the feedback email address and attention line from the model.
+
+    Args:
+        model: The SysML model to search
+
+    Returns:
+        The feedback contact details
+
+    Raises:
+        ValueError: If the DETECT_feedback package or one of its attributes is
+            missing, or an attribute does not evaluate to a string
+    """
+    feedback_package: syside.Package | None = None
+    for package in model.nodes(syside.Package):
+        if package.name == "DETECT_feedback":
+            feedback_package = package
+            break
+    if feedback_package is None:
+        raise ValueError("DETECT_feedback package not found")
+
+    def read_string(attribute_name: str) -> str:
+        attribute = get_named_attribute(feedback_package, attribute_name)
+        if attribute is None:
+            raise ValueError(f"{attribute_name} attribute not found")
+        expression = attribute.feature_value_expression
+        if expression is None:
+            raise ValueError(f"{attribute_name} has no value")
+        value, report = syside.Compiler().evaluate(expression)
+        if report.fatal or not isinstance(value, str):
+            raise ValueError(f"{attribute_name} does not evaluate to a string")
+        return value
+
+    return FeedbackContact(
+        email=read_string("feedback_email"),
+        attention=read_string("feedback_attention"),
+    )
 
 
 def get_ecosystem_sysml_element(model: syside.Model) -> syside.PartUsage:

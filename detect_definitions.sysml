@@ -8,6 +8,16 @@ package DETECT_Sizing {
     doc Description
     /* Determine DE Ecosystem Sizing */
 
+    package DETECT_feedback {
+        doc
+        /* Contact details used by the web app's "Feedback" links.
+         * Edit these values to change where user feedback is sent.
+         */
+
+        attribute feedback_email : ScalarValues::String = "osd-sea@mail.mil";
+        attribute feedback_attention : ScalarValues::String = "Attn: DEM&S";
+    }
+
     requirement def Criteria_Def {
         subject de_tool_ecosystem = DETECT_Input::de_ecosystem;
         attribute weight defined by ScalarValues::Rational [0..1];
