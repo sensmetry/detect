@@ -8,11 +8,17 @@ results appear as a table with a CSV download.
 import csv
 import html
 import io
+import logging
 import os
+import time
 import urllib.parse
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
+from enum import Enum
+from typing import NewType
 
 import syside
+from fastapi.responses import JSONResponse
 from nicegui import app, ui
 
 from detect import (
@@ -59,6 +65,12 @@ DOWNLOAD_BUTTON = "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700
 
 # The enumeration value the model gives its selection placeholders.
 PLACEHOLDER_VALUE = 0
+
+# /health is public, and each uncached answer parses the model. Reusing an answer for
+# this long bounds the parsing a visitor can cause to one parse per interval.
+HEALTH_REPORT_LIFETIME_SECONDS = 60.0
+
+logger = logging.getLogger(__name__)
 
 # Each page load parses the model afresh, because the sizing panel writes the visitor's
 # answers into it. A profile mapping holds only names, not model elements, and depends
@@ -642,14 +654,135 @@ def _sizing_panel(use_case: UseCase, ecosystem: Ecosystem) -> None:
         second_button_container.set_visibility(False)
 
 
-@app.get("/health")
-def health() -> dict[str, str]:
-    """Uptime-check target.
+HealthCheckName = NewType("HealthCheckName", str)
+"""Name of one health check, as it appears in the /health response."""
 
-    Always 200: this handler exists only if the module-level `import syside` succeeded.
-    When that import fails the process exits, and Cloud Run answers 5xx on every path.
+MonotonicSeconds = NewType("MonotonicSeconds", float)
+"""A reading of `time.monotonic()`."""
+
+
+class CheckState(Enum):
+    """Outcome of one health check. The values are the only states /health reports."""
+
+    OK = "ok"
+    FAILED = "failed"
+    SKIPPED = "skipped"
+
+
+class HealthStatus(Enum):
+    """Overall outcome of the health checks."""
+
+    OK = "ok"
+    DEGRADED = "degraded"
+
+
+@dataclass(frozen=True)
+class HealthReport:
+    """The state of every health check at one moment.
+
+    Attributes:
+        states: The state of each check, in the order the checks ran
+        checked_at: When the checks ran
     """
-    return {"status": "ok"}
+
+    states: dict[HealthCheckName, CheckState]
+    checked_at: MonotonicSeconds
+
+    @property
+    def status(self) -> HealthStatus:
+        """`OK` when every check is `OK`, otherwise `DEGRADED`."""
+        if all(state is CheckState.OK for state in self.states.values()):
+            return HealthStatus.OK
+        return HealthStatus.DEGRADED
+
+
+def _check_use_cases(model: syside.Model) -> None:
+    """Raise unless the model declares at least one use case that parses."""
+    if not parse(model):
+        raise ValueError("The model declares no use case")
+
+
+def _check_tool_definitions(model: syside.Model) -> None:
+    """Raise unless the model declares at least one documented tool type."""
+    if not tool_definitions(model):
+        raise ValueError("The model declares no tool type")
+
+
+MODEL_PARSE_CHECK = HealthCheckName("model_parse")
+
+# The steps a page load performs on a parsed model. Each raises when its step fails.
+MODEL_CHECKS: dict[HealthCheckName, Callable[[syside.Model], None]] = {
+    HealthCheckName("use_cases"): _check_use_cases,
+    HealthCheckName("tool_definitions"): _check_tool_definitions,
+}
+
+
+def _model_check_state(
+    name: HealthCheckName, check: Callable[[syside.Model], None], model: syside.Model
+) -> CheckState:
+    """Run one check on the model. A failure is logged; only its state is returned."""
+    try:
+        check(model)
+    except Exception:
+        logger.exception("Health check '%s' failed", name)
+        return CheckState.FAILED
+    return CheckState.OK
+
+
+def run_health_checks() -> dict[HealthCheckName, CheckState]:
+    """Parse the model and run every model check on it.
+
+    No exception escapes and no exception text is returned: a failure is written to the
+    log with its traceback, and reported here only as `CheckState.FAILED`. When the model
+    does not parse, the checks that need a model are `CheckState.SKIPPED`.
+    """
+    try:
+        model = parse_model()
+    except Exception:
+        logger.exception("Health check '%s' failed", MODEL_PARSE_CHECK)
+        return {
+            MODEL_PARSE_CHECK: CheckState.FAILED,
+            **dict.fromkeys(MODEL_CHECKS, CheckState.SKIPPED),
+        }
+    return {
+        MODEL_PARSE_CHECK: CheckState.OK,
+        **{name: _model_check_state(name, check, model) for name, check in MODEL_CHECKS.items()},
+    }
+
+
+def health_response(report: HealthReport) -> JSONResponse:
+    """Build the /health response: 200 when every check is `OK`, otherwise 503.
+
+    Every string in the body is a check name or an enumeration value written in this
+    file, so the body cannot carry a path, an environment variable or an exception text.
+    """
+    return JSONResponse(
+        {
+            "status": report.status.value,
+            "checks": {name: state.value for name, state in report.states.items()},
+        },
+        status_code=200 if report.status is HealthStatus.OK else 503,
+    )
+
+
+_health_report: HealthReport | None = None
+
+
+@app.get("/health")
+async def health() -> JSONResponse:
+    """Uptime-check target: report whether the steps of a page load succeed.
+
+    The handler is `async` so that it runs on the event loop, the thread on which the
+    pages use Syside, rather than on a worker thread at the same time as a page load.
+
+    A failed start needs no check here: when the module-level `import syside` fails the
+    process exits, and Cloud Run answers 5xx on every path.
+    """
+    global _health_report
+    now = MonotonicSeconds(time.monotonic())
+    if _health_report is None or now - _health_report.checked_at >= HEALTH_REPORT_LIFETIME_SECONDS:
+        _health_report = HealthReport(run_health_checks(), now)
+    return health_response(_health_report)
 
 
 if __name__ in {"__main__", "__mp_main__"}:

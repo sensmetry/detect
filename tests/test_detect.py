@@ -4,10 +4,13 @@ These run against the model files in `model/`. They are skipped when that direct
 holds no model files.
 """
 
+import json
 import os
 import urllib.parse
 
 import pytest
+from fastapi.testclient import TestClient
+from nicegui import app
 
 import detect
 import webapp_main
@@ -222,3 +225,80 @@ def test_feedback_mailto_carries_the_attention_line_and_page() -> None:
     assert address == "a@example.mil"
     assert fields["subject"] == ["Attn: X&Y - DETECT feedback"]
     assert fields["body"][0].startswith("Attn: X&Y\n\nPage: Home\n")
+
+
+# Stands for the text of a real failure, which named a file path and an environment variable.
+_FAILURE_TEXT = "cannot write /secrets/syside-license.lic named by SYSIDE_LICENSE_FILE"
+
+
+def _raise_failure(*_arguments: object) -> None:
+    """Fail the way a broken step of a page load does."""
+    raise ValueError(_FAILURE_TEXT)
+
+
+@pytest.fixture
+def uncached_health(monkeypatch: pytest.MonkeyPatch) -> TestClient:
+    """A client for the app, with no health report held from an earlier request."""
+    monkeypatch.setattr(webapp_main, "_health_report", None)
+    return TestClient(app)
+
+
+def test_health_is_ok_for_the_shipped_model(uncached_health: TestClient) -> None:
+    """With the model in `model/`, every check passes and /health answers 200."""
+    response = uncached_health.get("/health")
+    assert response.status_code == 200
+    assert response.json() == {
+        "status": "ok",
+        "checks": {"model_parse": "ok", "use_cases": "ok", "tool_definitions": "ok"},
+    }
+
+
+def test_health_reports_a_model_that_does_not_parse(
+    uncached_health: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A parse failure gives 503, skips the checks that need a model, and hides its text."""
+    monkeypatch.setattr(webapp_main, "parse_model", _raise_failure)
+    response = uncached_health.get("/health")
+    assert response.status_code == 503
+    assert response.json() == {
+        "status": "degraded",
+        "checks": {"model_parse": "failed", "use_cases": "skipped", "tool_definitions": "skipped"},
+    }
+    assert "secrets" not in response.text and "SYSIDE" not in response.text
+
+
+def test_health_reports_a_failing_model_check(
+    uncached_health: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """One failing check gives 503 and leaves the other checks' states unchanged."""
+    monkeypatch.setattr(webapp_main, "tool_definitions", _raise_failure)
+    response = uncached_health.get("/health")
+    assert response.status_code == 503
+    assert response.json() == {
+        "status": "degraded",
+        "checks": {"model_parse": "ok", "use_cases": "ok", "tool_definitions": "failed"},
+    }
+    assert "secrets" not in response.text and "SYSIDE" not in response.text
+
+
+def test_health_body_holds_only_check_names_and_states(
+    uncached_health: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Whatever fails, every string in the body comes from a fixed vocabulary."""
+    monkeypatch.setattr(webapp_main, "parse", _raise_failure)
+    body = json.loads(uncached_health.get("/health").text)
+    assert set(body) == {"status", "checks"}
+    assert body["status"] in {status.value for status in webapp_main.HealthStatus}
+    assert set(body["checks"]) == {webapp_main.MODEL_PARSE_CHECK, *webapp_main.MODEL_CHECKS}
+    assert set(body["checks"].values()) <= {state.value for state in webapp_main.CheckState}
+
+
+def test_health_reuses_a_report_within_its_lifetime(
+    uncached_health: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A second request inside the lifetime does not parse the model again."""
+    assert uncached_health.get("/health").status_code == 200
+    monkeypatch.setattr(webapp_main, "parse_model", _raise_failure)
+    assert uncached_health.get("/health").status_code == 200
+    monkeypatch.setattr(webapp_main, "HEALTH_REPORT_LIFETIME_SECONDS", 0.0)
+    assert uncached_health.get("/health").status_code == 503
