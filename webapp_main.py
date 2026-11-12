@@ -13,7 +13,8 @@ import urllib.parse
 from collections.abc import Sequence
 
 import syside
-from nicegui import ui
+from fastapi.responses import JSONResponse
+from nicegui import app, ui
 
 from detect import (
     TOOL_DEFINITIONS_FILENAME,
@@ -640,6 +641,16 @@ def _sizing_panel(use_case: UseCase, ecosystem: Ecosystem) -> None:
                 PRIMARY_BUTTON.replace("indigo", "green")
             )
         second_button_container.set_visibility(False)
+
+
+@app.get("/health")
+def health() -> JSONResponse:
+    """Uptime-check target."""
+    try:
+        import syside  # noqa: F811
+    except Exception as error:
+        return JSONResponse({"status": "error", "error": str(error)}, status_code=503)
+    return JSONResponse({"status": "ok"}, status_code=200)
 
 
 if __name__ in {"__main__", "__mp_main__"}:
