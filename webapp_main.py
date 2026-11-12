@@ -13,7 +13,6 @@ import urllib.parse
 from collections.abc import Sequence
 
 import syside
-from fastapi.responses import JSONResponse
 from nicegui import app, ui
 
 from detect import (
@@ -644,13 +643,13 @@ def _sizing_panel(use_case: UseCase, ecosystem: Ecosystem) -> None:
 
 
 @app.get("/health")
-def health() -> JSONResponse:
-    """Uptime-check target."""
-    try:
-        import syside  # noqa: F811
-    except Exception as error:
-        return JSONResponse({"status": "error", "error": str(error)}, status_code=503)
-    return JSONResponse({"status": "ok"}, status_code=200)
+def health() -> dict[str, str]:
+    """Uptime-check target.
+
+    Always 200: this handler exists only if the module-level `import syside` succeeded.
+    When that import fails the process exits, and Cloud Run answers 5xx on every path.
+    """
+    return {"status": "ok"}
 
 
 if __name__ in {"__main__", "__mp_main__"}:
